@@ -1,0 +1,57 @@
+[
+ {
+  "n": "Toyota Corolla Hybrid",
+  "t": "hev",
+  "c": 4.6
+ },
+ {
+  "n": "Toyota C-HR Hybrid",
+  "t": "hev",
+  "c": 5.2
+ },
+ {
+  "n": "Honda CR-V e:HEV",
+  "t": "hev",
+  "c": 6.3
+ },
+ {
+  "n": "Hyundai Tucson Hybrid",
+  "t": "hev",
+  "c": 5.9
+ },
+ {
+  "n": "MG ZS Hybrid+",
+  "t": "hev",
+  "c": 5.0
+ },
+ {
+  "n": "Renault Clio E-Tech",
+  "t": "hev",
+  "c": 4.8
+ },
+ {
+  "n": "Tesla Model Y",
+  "t": "ev",
+  "c": 16.5
+ },
+ {
+  "n": "Tesla Model 3",
+  "t": "ev",
+  "c": 14.5
+ },
+ {
+  "n": "Togg T10X",
+  "t": "ev",
+  "c": 17.5
+ },
+ {
+  "n": "MG4 Electric",
+  "t": "ev",
+  "c": 16.5
+ },
+ {
+  "n": "Volkswagen ID.4",
+  "t": "ev",
+  "c": 17.5
+ }
+]

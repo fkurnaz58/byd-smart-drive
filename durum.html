@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BYD Smart Drive · Araç durumu</title><meta name="theme-color" content="#0E1A30">
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Smart Drive"><meta name="apple-mobile-web-app-status-bar-style" content="black">
+<style>
+:root{--bg:#0E1A30;--card:#15264A;--border:#223A66;--tile:#11203E;--btn:#1B3260;--text:#F2F6FC;--sub:#A8B9D6;--muted:#7A8DB0;--accent:#2E86F5;--ok:#3BD18A;--warn:#FFB547}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:720px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:26px;margin:8px 0 4px;font-weight:650;letter-spacing:-.01em}h2{font-size:18px;margin:0 0 10px;font-weight:600}
+.by{color:var(--sub);margin:0 0 18px}.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin:0 0 14px}
+.hint{color:var(--sub);font-size:14px;margin:6px 0 0}.btn{display:block;width:100%;text-align:center;border:0;border-radius:14px;padding:14px 16px;font:600 17px system-ui,sans-serif;background:var(--btn);color:var(--text);text-decoration:none;cursor:pointer;margin-top:12px}
+.btn.primary{background:var(--accent);color:#fff}.row{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid var(--border)}
+.row:first-of-type{border-top:0}.row label{flex:1;font-size:15px}.val{min-width:52px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+input[type=range]{width:100%;accent-color:var(--accent)}input[type=text]{width:100%;background:var(--tile);color:var(--text);border:1px solid var(--border);border-radius:12px;padding:12px 14px;font:600 20px ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase}
+.seg{display:flex;background:var(--tile);border-radius:10px;padding:3px}.seg button{border:0;background:none;color:var(--sub);padding:6px 12px;border-radius:8px;font-weight:600}
+.seg button.on{background:var(--accent);color:#fff}.sw{appearance:none;width:46px;height:28px;border-radius:14px;background:var(--btn);position:relative;flex:none;cursor:pointer}
+.sw:checked{background:var(--ok)}.sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.15s}.sw:checked::after{left:21px}
+.slider{padding:10px 0;border-top:1px solid var(--border)}.slider .top{display:flex;justify-content:space-between;gap:10px}
+.msg{margin-top:12px;font-weight:600}.ok{color:var(--ok)}.err{color:var(--warn)}.lang{float:right}.small{font-size:13px;color:var(--muted)}
+a{color:var(--accent)}
+</style></head>
+<body><main>
+<div class="seg lang"><button data-l="tr" class="on">TR</button><button data-l="en">EN</button></div>
+<h1 data-tr="Araç durumu" data-en="Car status">Araç durumu</h1><p class="by"><a href="index.html">BYD Smart Drive</a> · by Fatih Kurnaz</p>
+<div class="card"><h2 data-tr="Aracın kodu" data-en="Car code">Aracın kodu</h2>
+<input type="text" id="code" placeholder="K7Q2-M9XD" maxlength="9" autocomplete="off">
+<p class="hint" data-tr="Araçtaki uygulamada Menü > Telefona Araç Durumu'nu açın; kod orada yazar." data-en="In the car app turn on Menu > Car Status to Phone; the code is shown there.">…</p>
+<button class="btn primary" id="go" data-tr="Durumu getir" data-en="Get status">Durumu getir</button></div>
+<div class="msg" id="msg"></div>
+<div id="nav"></div>
+<div id="park"></div>
+<div id="out"></div>
+<p class="small" data-tr="Araç açık ve internete bağlıyken güncellenir. Klima ve koltuk bilgisi uygulamadan verilen son komuttur. Konum gönderilmez." data-en="Updates while the car is on and online. A/C and seat info is the last command from the app. No location is sent.">…</p>
+</main><script>
+const S={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+let L=S.get('lang')||'tr';const t=(tr,en)=>L=='en'?en:tr;let last=null;
+function lang(){document.querySelectorAll('[data-'+L+']').forEach(e=>e.textContent=e.dataset[L]);document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.dataset.l==L));if(last)show(last)}
+document.querySelectorAll('.lang button').forEach(b=>b.onclick=()=>{L=b.dataset.l;S.set('lang',L);lang()});
+const code=document.getElementById('code');code.value=S.get('code')||'';
+function norm(s){s=(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');if(s.length!=8||/[^ABCDEFGHJKLMNPQRSTUVWXYZ23456789]/.test(s))return null;return s}
+const lvl=v=>v>0?String(v):t('kapalı','off');
+function row(k,v){return '<div class="row"><label>'+k+'</label><b>'+v+'</b></div>'}
+function show(d){last=d;const ago=Math.max(0,Math.round((Date.now()-d.t)/60000));const o=document.getElementById('out');
+ const mode={1:'Normal',2:'Eco',3:'Sport',4:t('Kar','Snow')}[d.driveMode]||'—';
+ const ty=['tyreFL','tyreFR','tyreRL','tyreRR'].map(k=>d[k]!=null?d[k].toFixed(1):'—').join(' · ');
+ o.innerHTML='<div class="card"><h2>'+t('Son güncelleme: ','Last update: ')+(ago<1?t('şimdi','now'):ago+t(' dk önce',' min ago'))+'</h2>'
+ +row(t('Batarya','Battery'),d.soc!=null?'%'+Math.round(d.soc)+(d.saveSwitch?(d.saveSwitch==2?' · SAVE':' · AUTO')+(d.socTarget!=null?' %'+Math.round(d.socTarget):''):''):'—')
+ +row(t('Kilit','Lock'),d.lock==null?'—':d.lock>=1?t('🔒 Kilitli','🔒 Locked'):t('🔓 Açık','🔓 Unlocked'))
+ +row(t('Dış sıcaklık','Outside temp'),d.outTemp!=null?Math.round(d.outTemp)+'°C':'—')
+ +row(t('Sürüş modu','Drive mode'),mode)+row(t('Hız','Speed'),d.speed!=null?Math.round(d.speed)+' km/h':'—')
+ +row(t('Lastikler (Ö-Sol · Ö-Sağ · A-Sol · A-Sağ)','Tyres (FL · FR · RL · RR)'),ty+' psi')
+ +row(t('Klima','A/C'),(d.ac?t('açık','on'):t('kapalı','off'))+' · '+d.acTemp+'°C')
+ +row(t('Ön cam','Defrost'),d.defrost?t('açık','on'):t('kapalı','off'))
+ +row(t('Koltuk ısıtma (sürücü / yolcu)','Seat heat (driver / pass.)'),lvl(d.heat1)+' / '+lvl(d.heat2))
+ +row(t('Koltuk soğutma (sürücü / yolcu)','Seat cool (driver / pass.)'),lvl(d.vent1)+' / '+lvl(d.vent2))
+ +row('Smart Drive',d.smartDrive?t('açık','on'):t('kapalı','off'))+row(t('Bugün yakıt','Fuel today'),d.todayCost+' TL')+'</div>'}
+async function load(){const m=document.getElementById('msg');const c=norm(code.value);
+ if(!c){m.className='msg err';m.textContent=t('Aracın kodunu kontrol edin (8 hane).','Check the car code (8 characters).');return}
+ S.set('code',c.slice(0,4)+'-'+c.slice(4));m.className='msg';m.textContent=t('Getiriliyor…','Loading…');
+ try{const r=await fetch('https://ntfy.sh/bydsmartdrive-durum-'+c.toLowerCase()+'/json?poll=1&since=12h');const lines=(await r.text()).trim().split('\n');
+  let d=null;for(const l of lines){try{const e=JSON.parse(l);if(e.event=='message'){const x=JSON.parse(e.message);if(x.format=='smartdrive-status')d=x}}catch(e){}}
+  if(!d){m.className='msg err';m.textContent=t('Son 12 saatte durum gelmedi. Araçta Telefona Araç Durumu açık mı?','No status in the last 12 hours. Is Car Status to Phone on in the car?');return}
+  m.textContent='';show(d)}catch(e){m.className='msg err';m.textContent=t('Getirilemedi, internet bağlantısını kontrol edin.','Could not load, check your internet connection.')}}
+// iPhone/Android: araçtan "Telefona gönder" ile gelen hedefler (son 6 saat), haritada açma düğmeleriyle.
+async function nav(c){const o=document.getElementById('nav');
+ try{const r=await fetch('https://ntfy.sh/bydsmartdrive-nav-'+c.toLowerCase()+'/json?poll=1&since=6h');const lines=(await r.text()).trim().split('\n');
+  const it=[];for(const l of lines){try{const e=JSON.parse(l);if(e.event!='message')continue;const m=/destination=([-0-9.]+),([-0-9.]+)/.exec(e.click||'');if(m)it.push({n:(e.title||'').replace(/^(Yol tarifi|Directions): /,''),a:m[1],o:m[2],t:e.time})}catch(x){}}
+  if(!it.length){o.innerHTML='';return}
+  let h='<div class="card"><h2>'+t('Araçtan gelen hedefler','Destinations from the car')+'</h2>';
+  for(const d of it.reverse().slice(0,5)){const ll=d.a+','+d.o;
+   h+='<p><b>'+d.n.replace(/[<>&]/g,'')+'</b><br><span class="small">'+new Date(d.t*1000).toLocaleTimeString(L=='en'?'en-GB':'tr-TR',{hour:'2-digit',minute:'2-digit'})+'</span></p>'
+   +'<a class="btn primary" href="https://maps.apple.com/?daddr='+ll+'&dirflg=d">'+t('Apple Haritalar','Apple Maps')+'</a> '
+   +'<a class="btn" href="https://www.google.com/maps/dir/?api=1&destination='+ll+'&travelmode=driving">Google Maps</a> '
+   +'<a class="btn" href="https://waze.com/ul?ll='+ll+'&navigate=yes">Waze</a>'}
+  o.innerHTML=h+'</div>'}catch(e){}}
+// Aracın park konumu (araçta "Park Konumunu Telefona Gönder" açıksa), son 7 gün; haritada açma düğmeleriyle.
+async function park(c){const o=document.getElementById('park');
+ try{const r=await fetch('https://ntfy.sh/bydsmartdrive-park-'+c.toLowerCase()+'/json?poll=1&since=7d');const lines=(await r.text()).trim().split('\n');
+  let d=null;for(const l of lines){try{const e=JSON.parse(l);if(e.event=='message'){const x=JSON.parse(e.message);if(x.format=='smartdrive-park')d=x}}catch(x){}}
+  if(!d){o.innerHTML='';return}
+  const ll=d.lat+','+d.lon,w=new Date(d.t).toLocaleString(L=='en'?'en-GB':'tr-TR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+  o.innerHTML='<div class="card"><h2>'+t('Arabam nerede?','Where is my car?')+'</h2><p class="small">'+t('Park edildi: ','Parked: ')+w+'</p>'
+   +'<a class="btn primary" href="https://maps.apple.com/?ll='+ll+'&q='+encodeURIComponent(t('Arabam','My car'))+'">'+t('Apple Haritalar','Apple Maps')+'</a> '
+   +'<a class="btn" href="https://www.google.com/maps/search/?api=1&query='+ll+'">Google Maps</a> '
+   +'<a class="btn" href="https://waze.com/ul?ll='+ll+'&navigate=yes">Waze</a></div>'}catch(e){}}
+const load0=load;load=async function(){await load0();const c=norm(code.value);if(c){nav(c);park(c)}};
+document.getElementById('go').onclick=load;lang();if(norm(code.value)){load();setInterval(load,60000)}
+</script></body></html>

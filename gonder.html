@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BYD Smart Drive · Araca gönder</title><meta name="theme-color" content="#0E1A30">
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Smart Drive"><meta name="apple-mobile-web-app-status-bar-style" content="black">
+<style>
+:root{--bg:#0E1A30;--card:#15264A;--border:#223A66;--tile:#11203E;--btn:#1B3260;--text:#F2F6FC;--sub:#A8B9D6;--muted:#7A8DB0;--accent:#2E86F5;--ok:#3BD18A;--warn:#FFB547}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:720px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:26px;margin:8px 0 4px;font-weight:650;letter-spacing:-.01em}h2{font-size:18px;margin:0 0 10px;font-weight:600}
+.by{color:var(--sub);margin:0 0 18px}.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin:0 0 14px}
+.hint{color:var(--sub);font-size:14px;margin:6px 0 0}.btn{display:block;width:100%;text-align:center;border:0;border-radius:14px;padding:14px 16px;font:600 17px system-ui,sans-serif;background:var(--btn);color:var(--text);text-decoration:none;cursor:pointer;margin-top:12px}
+.btn.primary{background:var(--accent);color:#fff}.row{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid var(--border)}
+.row:first-of-type{border-top:0}.row label{flex:1;font-size:15px}.val{min-width:52px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+input[type=range]{width:100%;accent-color:var(--accent)}input[type=text]{width:100%;background:var(--tile);color:var(--text);border:1px solid var(--border);border-radius:12px;padding:12px 14px;font:600 20px ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase}
+.seg{display:flex;background:var(--tile);border-radius:10px;padding:3px}.seg button{border:0;background:none;color:var(--sub);padding:6px 12px;border-radius:8px;font-weight:600}
+.seg button.on{background:var(--accent);color:#fff}.sw{appearance:none;width:46px;height:28px;border-radius:14px;background:var(--btn);position:relative;flex:none;cursor:pointer}
+.sw:checked{background:var(--ok)}.sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.15s}.sw:checked::after{left:21px}
+.slider{padding:10px 0;border-top:1px solid var(--border)}.slider .top{display:flex;justify-content:space-between;gap:10px}
+.msg{margin-top:12px;font-weight:600}.ok{color:var(--ok)}.err{color:var(--warn)}.lang{float:right}.small{font-size:13px;color:var(--muted)}
+a{color:var(--accent)}
+</style></head>
+<body><main>
+<div class="seg lang"><button data-l="tr" class="on">TR</button><button data-l="en">EN</button></div>
+<h1 data-tr="Araca link gönder" data-en="Send a link to the car">Araca link gönder</h1><p class="by"><a href="index.html">BYD Smart Drive</a> · by Fatih Kurnaz</p>
+<div class="card"><h2 data-tr="Aracın kodu" data-en="Car code">Aracın kodu</h2>
+<input type="text" id="code" placeholder="K7Q2-M9XD" maxlength="9" autocomplete="off">
+<h2 data-tr="Link ya da video adresi" data-en="Link or video address">Link ya da video adresi</h2>
+<input type="text" id="url" placeholder="https://" autocomplete="off">
+<button class="btn primary" id="send" data-tr="Araca gönder" data-en="Send to car">Araca gönder</button></div>
+<div class="msg" id="msg"></div>
+<p class="small" data-tr="Link aracın Bildirimler listesine düşer; orada Aç'a dokununca tarayıcıda açılır. Android'de bu sayfayı Ana ekrana ekleyip Paylaş menüsünden de gönderebilirsiniz." data-en="The link lands in the car's Notifications; tap Open there to open it in the browser. On Android add this page to the home screen and you can also use the Share menu.">…</p>
+</main><script>
+const S={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+let L=S.get('lang')||'tr';const t=(tr,en)=>L=='en'?en:tr;
+function lang(){document.querySelectorAll('[data-'+L+']').forEach(e=>e.textContent=e.dataset[L]);document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.dataset.l==L))}
+document.querySelectorAll('.lang button').forEach(b=>b.onclick=()=>{L=b.dataset.l;S.set('lang',L);lang()});
+const code=document.getElementById('code');code.value=S.get('code')||'';
+function norm(s){s=(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');if(s.length!=8||/[^ABCDEFGHJKLMNPQRSTUVWXYZ23456789]/.test(s))return null;return s}
+const q=new URLSearchParams(location.search);const sh=(q.get('url')||'')+' '+(q.get('text')||'');const mm=sh.match(/https?:\/\/\S+/);if(mm)document.getElementById('url').value=mm[0];
+document.getElementById('send').onclick=async()=>{const m=document.getElementById('msg');const c=norm(code.value);
+ const u=(document.getElementById('url').value.match(/https?:\/\/\S+/)||[])[0];
+ if(!c){m.className='msg err';m.textContent=t('Aracın kodunu kontrol edin (8 hane).','Check the car code (8 characters).');return}
+ if(!u){m.className='msg err';m.textContent=t('http ile başlayan bir adres yazın.','Enter an address starting with http.');return}
+ S.set('code',c.slice(0,4)+'-'+c.slice(4));m.className='msg';m.textContent=t('Gönderiliyor…','Sending…');
+ try{const r=await fetch('https://ntfy.sh/bydsmartdrive-link-'+c.toLowerCase(),{method:'POST',body:u});
+  if(!r.ok)throw new Error(r.status);m.className='msg ok';m.textContent=t('Gönderildi. Araç açık ve internete bağlıysa birkaç saniye içinde gelir.','Sent. If the car is on and online it arrives within seconds.')}
+ catch(e){m.className='msg err';m.textContent=t('Gönderilemedi, internet bağlantısını kontrol edin.','Could not send, check your internet connection.')}};
+lang();
+</script></body></html>
