@@ -44,14 +44,13 @@ const lvl=v=>v>0?String(v):t('kapalı','off');
 function row(k,v){return '<div class="row"><label>'+k+'</label><b>'+v+'</b></div>'}
 function show(d){last=d;const ago=Math.max(0,Math.round((Date.now()-d.t)/60000));const o=document.getElementById('out');
  const mode={1:'Normal',2:'Eco',3:'Sport',4:t('Kar','Snow')}[d.driveMode]||'—';
- const tu=d.tyreUnit||'PSI',tf=v=>tu=='bar'?(v/14.5037738).toFixed(2):tu=='kPa'?(v/0.1450377).toFixed(0):v.toFixed(1);
- const ty=['tyreFL','tyreFR','tyreRL','tyreRR'].map(k=>d[k]!=null?tf(d[k]):'—').join(' · ');
+ const ty=['tyreFL','tyreFR','tyreRL','tyreRR'].map(k=>d[k]!=null?d[k].toFixed(1):'—').join(' · ');
  o.innerHTML='<div class="card"><h2>'+t('Son güncelleme: ','Last update: ')+(ago<1?t('şimdi','now'):ago+t(' dk önce',' min ago'))+'</h2>'
  +row(t('Batarya','Battery'),d.soc!=null?'%'+Math.round(d.soc)+(d.saveSwitch?(d.saveSwitch==2?' · SAVE':' · AUTO')+(d.socTarget!=null?' %'+Math.round(d.socTarget):''):''):'—')
  +row(t('Kilit','Lock'),d.lock==null?'—':d.lock>=1?t('🔒 Kilitli','🔒 Locked'):t('🔓 Açık','🔓 Unlocked'))
  +row(t('Dış sıcaklık','Outside temp'),d.outTemp!=null?Math.round(d.outTemp)+'°C':'—')
  +row(t('Sürüş modu','Drive mode'),mode)+row(t('Hız','Speed'),d.speed!=null?Math.round(d.speed)+' km/h':'—')
- +row(t('Lastikler (Ö-Sol · Ö-Sağ · A-Sol · A-Sağ)','Tyres (FL · FR · RL · RR)'),ty+' '+tu)
+ +row(t('Lastikler (Ö-Sol · Ö-Sağ · A-Sol · A-Sağ)','Tyres (FL · FR · RL · RR)'),ty+' psi')
  +row(t('Klima','A/C'),(d.ac?t('açık','on'):t('kapalı','off'))+' · '+d.acTemp+'°C')
  +row(t('Ön cam','Defrost'),d.defrost?t('açık','on'):t('kapalı','off'))
  +row(t('Koltuk ısıtma (sürücü / yolcu)','Seat heat (driver / pass.)'),lvl(d.heat1)+' / '+lvl(d.heat2))
