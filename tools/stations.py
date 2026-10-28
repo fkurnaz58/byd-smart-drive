@@ -3,7 +3,7 @@
 
 Kaynak: EPDK Şarj Serbest Erişim Platformu verisini her gece yayımlayan açık depo
 (github.com/Bozkorde/TURKIYE-EPDK-CHARGE-STATIONS, stations.json). EPDK'ya doğrudan istek atılmaz.
-Çıktı: {"at": unix, "s": [[lat, lon, marka, ad, acKw, dcKw], ...]}
+Çıktı: {"at": unix, "s": [[lat, lon, marka, ad, acKw, dcKw, acAdet, dcAdet], ...]}
 """
 import json
 import sys
@@ -30,7 +30,8 @@ def main():
             continue
         dc = max(s.get("dcGuc") or 0, s.get("chademoGuc") or 0)
         rows.append([round(lat, 5), round(lon, 5), (s.get("marka") or "").strip(),
-                     (s.get("officialName") or "").strip(), s.get("acGuc") or 0, dc])
+                     (s.get("officialName") or "").strip(), s.get("acGuc") or 0, dc,
+                     s.get("acAdet") or 0, (s.get("dcAdet") or 0) + (s.get("chademoAdet") or 0)])
     if len(rows) < 5000:
         sys.exit("too few stations: %d" % len(rows))
     rows.sort()
