@@ -23,13 +23,21 @@ a{color:var(--accent)}
 </style></head>
 <body><main>
 <div class="seg lang"><button data-l="tr" class="on">TR</button><button data-l="en">EN</button></div>
-<h1 data-tr="Araca link gönder" data-en="Send a link to the car">Araca link gönder</h1><p class="by"><a href="index.html">BYD Smart Drive</a> · by Fatih Kurnaz</p>
+<h1 data-tr="Araca gönder" data-en="Send to the car">Araca gönder</h1><p class="by"><a href="index.html">BYD Smart Drive</a> · by Fatih Kurnaz</p>
 <div class="card"><h2 data-tr="Aracın kodu" data-en="Car code">Aracın kodu</h2>
 <input type="text" id="code" placeholder="K7Q2-M9XD" maxlength="9" autocomplete="off">
-<h2 data-tr="Link ya da video adresi" data-en="Link or video address">Link ya da video adresi</h2>
-<input type="text" id="url" placeholder="https://" autocomplete="off">
+<h2 data-tr="Harita hedefi, link ya da video" data-en="Map destination, link or video">Harita hedefi, link ya da video</h2>
+<input type="text" id="url" placeholder="https://maps.app.goo.gl/…" autocomplete="off">
+<button class="btn" id="paste" data-tr="Panodan yapıştır" data-en="Paste from clipboard">Panodan yapıştır</button>
 <button class="btn primary" id="send" data-tr="Araca gönder" data-en="Send to car">Araca gönder</button></div>
 <div class="msg" id="msg"></div>
+<div class="card"><h2 data-tr="📍 Android Auto / CarPlay ile gidenler" data-en="📍 Driving with Android Auto / CarPlay">📍 Android Auto / CarPlay ile gidenler</h2>
+<p class="hint" data-tr="Araç, telefonda Android Auto / CarPlay'e yazılan hedefi göremez. Hedefi haritada bulup Paylaş ile buraya gönderin: araç rotadaki yokuşlara bakar (uzun yokuş varsa bataryayı önceden doldurur) ve Yol tarifi / Telefona gönder seçeneklerini gösterir. Google Maps, Apple Haritalar, Yandex ve Waze linkleri ya da 37.4297, 34.8742 gibi koordinat olur." data-en="The car can't see a destination typed into Android Auto / CarPlay on the phone. Find it on the map and Share it here: the car checks the route's climbs (fills the battery first if a long climb is ahead) and shows Directions / Send to phone. Google Maps, Apple Maps, Yandex and Waze links or coordinates like 37.4297, 34.8742 work.">…</p></div>
+<div class="card"><h2 data-tr="Android: Paylaş menüsüne ekle" data-en="Android: add to the Share menu">Android: Paylaş menüsüne ekle</h2>
+<p class="hint" data-tr="1) Bu sayfayı Chrome'da açın, ⋮ menü > Ana ekrana ekle (ya da Uygulamayı yükle). 2) Aracın kodunu bir kez yazıp bir şey gönderin (kod hatırlanır). 3) Google Maps'te hedefe dokunun > Paylaş > Smart Drive. Kod kayıtlıysa tek dokunuşla kendiliğinden gönderilir." data-en="1) Open this page in Chrome, ⋮ menu > Add to Home screen (or Install app). 2) Type the car code once and send something (it's remembered). 3) In Google Maps tap the place > Share > Smart Drive. With the code saved it sends by itself.">…</p></div>
+<div class="card"><h2 data-tr="iPhone: Paylaş menüsüne Kestirme" data-en="iPhone: a Shortcut in the Share menu">iPhone: Paylaş menüsüne Kestirme</h2>
+<p class="hint" data-tr="1) Bu sayfayı Safari'de açın, Paylaş > Ana Ekrana Ekle; açıp aracın kodunu bir kez yazın ve bir şey gönderin. 2) Kestirmeler uygulaması > + > adı: Araca gönder. Ayrıntılar (ⓘ) > Paylaşma Sayfasında Göster: açık. 3) Eylem ekle: Metin, içine yazın: https://fkurnaz58.github.io/byd-smart-drive/gonder.html?url= ve hemen arkasına Kestirme Girdisi değişkenini ekleyin. 4) Eylem ekle: URL'leri Aç. 5) Apple Haritalar ya da Google Maps'te yer > Paylaş > Araca gönder. Sayfa açılır ve kendiliğinden gönderir." data-en="1) Open this page in Safari, Share > Add to Home Screen; open it, type the car code once and send something. 2) Shortcuts app > + > name: Send to car. Details (ⓘ) > Show in Share Sheet: on. 3) Add action Text with: https://fkurnaz58.github.io/byd-smart-drive/gonder.html?url= followed directly by the Shortcut Input variable. 4) Add action Open URLs. 5) In Apple Maps or Google Maps: place > Share > Send to car. The page opens and sends by itself.">…</p>
+<p class="hint" data-tr="Kestirme kurmak istemezseniz: haritada Paylaş > Kopyala, sonra bu sayfada Panodan yapıştır > Araca gönder." data-en="Without a Shortcut: in the map Share > Copy, then here Paste from clipboard > Send to car.">…</p></div>
 <p class="small" data-tr="Link aracın Bildirimler listesine düşer; orada Aç'a dokununca tarayıcıda açılır. Android'de bu sayfayı Ana ekrana ekleyip Paylaş menüsünden de gönderebilirsiniz." data-en="The link lands in the car's Notifications; tap Open there to open it in the browser. On Android add this page to the home screen and you can also use the Share menu.">…</p>
 </main><script>
 const S={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
@@ -38,14 +46,18 @@ function lang(){document.querySelectorAll('[data-'+L+']').forEach(e=>e.textConte
 document.querySelectorAll('.lang button').forEach(b=>b.onclick=()=>{L=b.dataset.l;S.set('lang',L);lang()});
 const code=document.getElementById('code');code.value=S.get('code')||'';
 function norm(s){s=(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');if(s.length!=8||/[^ABCDEFGHJKLMNPQRSTUVWXYZ23456789]/.test(s))return null;return s}
-const q=new URLSearchParams(location.search);const sh=(q.get('url')||'')+' '+(q.get('text')||'');const mm=sh.match(/https?:\/\/\S+/);if(mm)document.getElementById('url').value=mm[0];
+const q=new URLSearchParams(location.search);const sh=(q.get('url')||'')+' '+(q.get('text')||'')+' '+(q.get('title')||'');
+function pick(s){s=s||'';const m=s.match(/https?:\/\/\S+/);if(m)return m[0];const c=s.match(/(-?\d{1,2}\.\d{3,})\s*[,;\s]\s*(-?\d{1,3}\.\d{3,})/);if(c)return 'https://maps.google.com/?q='+c[1]+','+c[2];return null}
+const shared=pick(sh);if(shared)document.getElementById('url').value=shared;
+document.getElementById('paste').onclick=async()=>{try{const x=await navigator.clipboard.readText();const p=pick(x);document.getElementById('url').value=p||x}catch(e){const m=document.getElementById('msg');m.className='msg err';m.textContent=t('Pano okunamadı; uzun basıp Yapıştır deyin.','Clipboard unavailable; long-press and Paste.')}};
 document.getElementById('send').onclick=async()=>{const m=document.getElementById('msg');const c=norm(code.value);
- const u=(document.getElementById('url').value.match(/https?:\/\/\S+/)||[])[0];
+ const u=pick(document.getElementById('url').value);
  if(!c){m.className='msg err';m.textContent=t('Aracın kodunu kontrol edin (8 hane).','Check the car code (8 characters).');return}
- if(!u){m.className='msg err';m.textContent=t('http ile başlayan bir adres yazın.','Enter an address starting with http.');return}
+ if(!u){m.className='msg err';m.textContent=t('Bir harita linki, koordinat ya da http ile başlayan adres yazın.','Enter a map link, coordinates or an address starting with http.');return}
  S.set('code',c.slice(0,4)+'-'+c.slice(4));m.className='msg';m.textContent=t('Gönderiliyor…','Sending…');
  try{const r=await fetch('https://ntfy.sh/bydsmartdrive-link-'+c.toLowerCase(),{method:'POST',body:u});
   if(!r.ok)throw new Error(r.status);m.className='msg ok';m.textContent=t('Gönderildi. Araç açık ve internete bağlıysa birkaç saniye içinde gelir.','Sent. If the car is on and online it arrives within seconds.')}
  catch(e){m.className='msg err';m.textContent=t('Gönderilemedi, internet bağlantısını kontrol edin.','Could not send, check your internet connection.')}};
 lang();
+if(shared&&norm(code.value))document.getElementById('send').click();
 </script></body></html>
