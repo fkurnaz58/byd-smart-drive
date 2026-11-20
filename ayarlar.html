@@ -59,7 +59,7 @@ function render(){
 }
 function keep(){saved.p=Object.assign(saved.p||{},changed);saved.r=Object.assign(saved.r||{},rulesChanged);S.set('values',JSON.stringify(saved))}
 document.querySelectorAll('.lang button').forEach(b=>b.onclick=()=>{L=b.dataset.l;S.set('lang',L);render()});
-const code=document.getElementById('code');code.value=S.get('code')||'';
+const code=document.getElementById('code');code.value=S.get('code')||'';{const k=new URLSearchParams(location.search).get('kod');if(k){code.value=k;S.set('code',k)}}
 function norm(s){s=(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');if(s.length!=8||/[^ABCDEFGHJKLMNPQRSTUVWXYZ23456789]/.test(s))return null;return s}
 document.getElementById('send').onclick=async()=>{const m=document.getElementById('msg');const c=norm(code.value);
  if(!c){m.className='msg err';m.textContent=t('Aracın kodunu kontrol edin (8 hane).','Check the car code (8 characters).');return}

@@ -38,7 +38,7 @@ const S={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,
 let L=S.get('lang')||'tr';const t=(tr,en)=>L=='en'?en:tr;let last=null;
 function lang(){document.querySelectorAll('[data-'+L+']').forEach(e=>e.textContent=e.dataset[L]);document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.dataset.l==L));if(last)show(last)}
 document.querySelectorAll('.lang button').forEach(b=>b.onclick=()=>{L=b.dataset.l;S.set('lang',L);lang()});
-const code=document.getElementById('code');code.value=S.get('code')||'';
+const code=document.getElementById('code');code.value=S.get('code')||'';{const k=new URLSearchParams(location.search).get('kod');if(k){code.value=k;S.set('code',k)}}
 function norm(s){s=(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');if(s.length!=8||/[^ABCDEFGHJKLMNPQRSTUVWXYZ23456789]/.test(s))return null;return s}
 const lvl=v=>v>0?String(v):t('kapalı','off');
 function row(k,v){return '<div class="row"><label>'+k+'</label><b>'+v+'</b></div>'}
