@@ -74,8 +74,15 @@ async function nav(c){const o=document.getElementById('nav');
    h+='<p><b>'+d.n.replace(/[<>&]/g,'')+'</b><br><span class="small">'+new Date(d.t*1000).toLocaleTimeString(L=='en'?'en-GB':'tr-TR',{hour:'2-digit',minute:'2-digit'})+'</span></p>'
    +'<a class="btn primary" href="https://maps.apple.com/?daddr='+ll+'&dirflg=d">'+t('Apple Haritalar','Apple Maps')+'</a> '
    +'<a class="btn" href="https://www.google.com/maps/dir/?api=1&destination='+ll+'&travelmode=driving">Google Maps</a> '
-   +'<a class="btn" href="https://waze.com/ul?ll='+ll+'&navigate=yes">Waze</a>'}
+   +'<a class="btn" href="https://waze.com/ul?ll='+ll+'&navigate=yes">Waze</a> '+yxb(d.a,d.o)}
   o.innerHTML=h+'</div>'}catch(e){}}
+// Yandex Navi: Android'de intent (uygulama yoksa Yandex Haritalar web), iPhone'da yandexnavi:// ve 1,5 sn sonra web yedeği.
+function yxw(a,o){return 'https://yandex.com.tr/maps/?rtext=~'+a+','+o+'&rtt=auto'}
+function yxb(a,o){a=+a;o=+o;if(!isFinite(a)||!isFinite(o))return '';return '<a class="btn" href="#" onclick="return yx('+a+','+o+')">Yandex Navi</a> '
+ +'<a class="btn" href="'+yxw(a,o)+'">'+t('Yandex Haritalar','Yandex Maps')+'</a>'}
+function yx(a,o){const q='build_route_on_map?lat_to='+a+'&lon_to='+o,w=yxw(a,o);
+ if(/Android/i.test(navigator.userAgent)){location.href='intent://'+q+'#Intent;scheme=yandexnavi;package=ru.yandex.yandexnavi;S.browser_fallback_url='+encodeURIComponent(w)+';end';return false}
+ location.href='yandexnavi://'+q;setTimeout(function(){if(!document.hidden)location.href=w},1500);return false}
 // Aracın park konumu (araçta "Park Konumunu Telefona Gönder" açıksa), son 7 gün; haritada açma düğmeleriyle.
 async function park(c){const o=document.getElementById('park');
  try{const r=await fetch('https://ntfy.sh/bydsmartdrive-park-'+c.toLowerCase()+'/json?poll=1&since=7d');const lines=(await r.text()).trim().split('\n');
@@ -85,7 +92,7 @@ async function park(c){const o=document.getElementById('park');
   o.innerHTML='<div class="card"><h2>'+t('Arabam nerede?','Where is my car?')+'</h2><p class="small">'+t('Park edildi: ','Parked: ')+w+'</p>'
    +'<a class="btn primary" href="https://maps.apple.com/?ll='+ll+'&q='+encodeURIComponent(t('Arabam','My car'))+'">'+t('Apple Haritalar','Apple Maps')+'</a> '
    +'<a class="btn" href="https://www.google.com/maps/search/?api=1&query='+ll+'">Google Maps</a> '
-   +'<a class="btn" href="https://waze.com/ul?ll='+ll+'&navigate=yes">Waze</a></div>'}catch(e){}}
+   +'<a class="btn" href="https://waze.com/ul?ll='+ll+'&navigate=yes">Waze</a> '+yxb(d.lat,d.lon)+'</div>'}catch(e){}}
 const load0=load;load=async function(){await load0();const c=norm(code.value);if(c){nav(c);park(c)}};
 document.getElementById('go').onclick=load;lang();if(norm(code.value)){load();setInterval(load,60000)}
 </script></body></html>
