@@ -56,16 +56,17 @@ const code=document.getElementById('code');code.value=S.get('code')||'';{const k
 function norm(s){s=(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');if(s.length!=8||/[^ABCDEFGHJKLMNPQRSTUVWXYZ23456789]/.test(s))return null;return s}
 const $=i=>document.getElementById(i);
 function say(id,ok,tx){const m=$(id);m.className='msg '+(ok===true?'ok':ok===false?'err':'');m.textContent=tx}
-let lay=null,pos=[],hid=[],sel=null,k=1;
+let lay=null,pos=[],hid=[],sel=null,k=1,st=null,lastImg=0,lastSt=0;
 function ago(ms){const m=Math.round((Date.now()-ms)/60000);return m<1?t('az önce','just now'):m<60?m+t(' dk önce',' min ago'):Math.floor(m/60)+t(' sa ',' h ')+(m%60)+t(' dk önce',' min ago')}
 async function load(){const c=norm(code.value);if(!c){say('msg',false,t('Aracın kodunu kontrol edin (8 hane).','Check the car code (8 characters).'));return}
  S.set('code',c.slice(0,4)+'-'+c.slice(4));say('msg',null,t('Yükleniyor…','Loading…'));
  try{const r=await fetch('https://ntfy.sh/bydsmartdrive-ekran-'+c.toLowerCase()+'/json?poll=1&since=12h');const tx=await r.text();
-  let img=null,js=null;const now=Date.now()/1000;
-  tx.split('\n').forEach(l=>{if(!l.trim())return;try{const e=JSON.parse(l);const a=e.attachment;if(!a||(a.expires&&a.expires<now))return;
+  let img=null,js=null;const now=Date.now()/1000;st=null;
+  tx.split('\n').forEach(l=>{if(!l.trim())return;try{const e=JSON.parse(l);if(e.message&&e.message.indexOf('smartdrive-screen-status')>0){try{st=JSON.parse(e.message);st.t=e.time*1000}catch(x){}}const a=e.attachment;if(!a||(a.expires&&a.expires<now))return;
    if(a.name=='ekran.jpg')img={url:a.url,t:e.time*1000};if(a.name=='duzen.json')js={url:a.url,t:e.time*1000}}catch(x){}});
   if(img){$('shot').src=img.url;$('shotAt').textContent=t('Son görüntü: ','Last picture: ')+new Date(img.t).toLocaleString()+' ('+ago(img.t)+')';$('shotCard').hidden=false}
   if(js){const o=await (await fetch(js.url)).json();lay=o;$('edCard').hidden=false;reset()}
+  lastImg=img?img.t:0;lastSt=st?st.t:0;
   if(!img&&!js){say('msg',false,t('Son 3 saatte görüntü yok. Araçta ayar açık mı, Smart Drive ana ekranı önde mi? Araç açıksa "Araçtan yeni görüntü iste"ye basın.','No picture in the last 3 hours. Is the option on in the car and the Smart Drive home screen in front? If the car is on, tap "Ask the car for a new picture".'));return}
   say('msg',true,t('Yüklendi.','Loaded.'))}
  catch(e){say('msg',false,t('Yüklenemedi, internet bağlantısını kontrol edin.','Could not load, check your internet connection.'))}}
@@ -94,7 +95,12 @@ function drag(el,q,rs){el.addEventListener('pointerdown',ev=>{ev.preventDefault(
  addEventListener('pointermove',mv);addEventListener('pointerup',up);addEventListener('pointercancel',up);
  document.querySelectorAll('.bx.sel').forEach(x=>x.classList.remove('sel'));(el.classList.contains('bx')?el:el.parentNode).classList.add('sel')})}
 $('load').onclick=load;
-$('ask').onclick=async()=>{if(await cmd({type:'shot'},'msg')){say('msg',null,t('İstendi. Araç açıksa birkaç saniye içinde gelir…','Requested. If the car is on it arrives in a few seconds…'));setTimeout(load,9000)}};
+$('ask').onclick=async()=>{const t0=Date.now()-5000;if(!await cmd({type:'shot'},'msg'))return;
+ say('msg',null,t('İstendi, araçtan cevap bekleniyor…','Requested, waiting for the car…'));
+ for(let i=0;i<10;i++){await new Promise(r=>setTimeout(r,4000));await load();
+  if(lastImg>t0){say('msg',true,t('Yeni görüntü geldi.','New picture arrived.'));return}
+  if(lastSt>t0&&st&&st.state=='not_front'){say('msg',false,t('Araç cevap verdi ama Smart Drive ana ekranı önde değil (ör. Android Auto açık). Görüntü, Smart Drive ana ekranına dönünce gelir; kutular yine düzenlenebilir.','The car answered but the Smart Drive home screen is not in front (e.g. Android Auto is open). The picture comes when you return to the Smart Drive home screen; boxes can still be edited.'));return}}
+ say('msg',false,t('Araçtan cevap gelmedi. Araç açık ve internete bağlı mı, araçta Telefon Bağlantısı > Ana Ekranı Telefonda Göster ve Düzenle açık mı? Araç güncel sürümde (6.90+) mi?','No answer from the car. Is the car on and online, and is Phone Link > Show and Edit Home Screen on Phone turned on? Is the car app up to date (6.90+)?'))};
 $('reset').onclick=reset;
 $('send').onclick=async()=>{if(!lay)return;if(await cmd({type:'layout',key:lay.key,pos:pos,hidden:hid},'msg2')){say('msg2',true,t('Gönderildi. Araç açıksa birkaç saniye içinde uygulanır, sonra yeni görüntü gelir.','Sent. If the car is on it applies within seconds, then a new picture arrives.'));setTimeout(load,10000)}};
 $('restore').onclick=async()=>{if(await cmd({type:'restore'},'msg2')){say('msg2',true,t('İstendi. Araç eski düzene döner.','Requested. The car goes back to the old layout.'));setTimeout(load,10000)}};
