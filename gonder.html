@@ -22,7 +22,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}input[type=text]{width:1
 a{color:var(--accent)}
 .nav{position:sticky;top:0;z-index:9;background:rgba(14,26,48,.96);border-bottom:1px solid var(--border);padding:env(safe-area-inset-top) 0 0}.nav div{max-width:720px;margin:0 auto;display:flex;gap:5px;padding:8px 8px;flex-wrap:wrap;justify-content:center}.nav a,.nav button{flex:none;border:0;border-radius:10px;padding:7px 9px;background:var(--btn);color:var(--text);font:600 14px system-ui,sans-serif;text-decoration:none;cursor:pointer}.nav a.on{background:var(--accent);color:#fff}
 </style></head>
-<body><nav class="nav"><div><button type="button" onclick="if(history.length>1)history.back();else location.href='index.html'" data-tr="‹ Geri" data-en="‹ Back">‹ Geri</button><a href="index.html" data-tr="⌂ Ana" data-en="⌂ Home">⌂ Ana</a><a href="ekran.html" data-tr="Ekran" data-en="Screen">Ekran</a><a href="durum.html" data-tr="Durum" data-en="Status">Durum</a><a href="gonder.html" data-tr="Gönder" data-en="Send">Gönder</a><a href="ayarlar.html" data-tr="Ayarlar" data-en="Settings">Ayarlar</a></div></nav><script>(function(){var p=location.pathname.split("/").pop()||"index.html";document.querySelectorAll(".nav a").forEach(function(a){if(a.getAttribute("href")==p)a.className="on"})})()</script><main>
+<body><nav class="nav"><div><button type="button" onclick="if(history.length>1)history.back();else location.href='index.html'" data-tr="‹ Geri" data-en="‹ Back">‹ Geri</button><a href="index.html" data-tr="⌂ Ana" data-en="⌂ Home">⌂ Ana</a><a href="ekran.html" data-tr="Ekran" data-en="Screen">Ekran</a><a href="durum.html" data-tr="Durum" data-en="Status">Durum</a><a href="gonder.html" data-tr="Gönder" data-en="Send">Gönder</a><a href="yedek.html" data-tr="Yedek" data-en="Backup">Yedek</a><a href="ayarlar.html" data-tr="Ayarlar" data-en="Settings">Ayarlar</a></div></nav><script>(function(){var p=location.pathname.split("/").pop()||"index.html";document.querySelectorAll(".nav a").forEach(function(a){if(a.getAttribute("href")==p)a.className="on"})})()</script><main>
 <div class="seg lang"><button data-l="tr" class="on">TR</button><button data-l="en">EN</button></div>
 <h1 data-tr="Araca gönder" data-en="Send to the car">Araca gönder</h1><p class="by"><a href="index.html">BYD Smart Drive</a> · by Fatih Kurnaz</p>
 <div class="card"><h2 data-tr="Aracın kodu" data-en="Car code">Aracın kodu</h2>
@@ -32,6 +32,11 @@ a{color:var(--accent)}
 <button class="btn" id="paste" data-tr="Panodan yapıştır" data-en="Paste from clipboard">Panodan yapıştır</button>
 <button class="btn primary" id="send" data-tr="Araca gönder" data-en="Send to car">Araca gönder</button></div>
 <div class="msg" id="msg"></div>
+<div class="card"><h2 data-tr="📎 Dosya gönder" data-en="📎 Send a file">📎 Dosya gönder</h2>
+<p class="hint" data-tr="Fotoğraf, PDF, APK ya da herhangi bir dosya (en çok 15 MB). Araçta Download/BYD-Smart-Drive/Telefondan klasörüne kaydedilir ve Bildirimler'e düşer; oradan Aç ile açılır, APK ise İndir ve Kur çıkar. Dosya 3 saat sonra internetten silinir. Smart Drive yedeği gönderirseniz araçta geri yüklensin mi diye sorulur." data-en="Photo, PDF, APK or any file (up to 15 MB). The car saves it in Download/BYD-Smart-Drive/Telefondan and lists it in Notifications; open it there, or for an APK use Download and Install. The file is deleted from the internet after 3 hours. A Smart Drive backup asks to be restored in the car.">…</p>
+<input type="file" id="file" style="margin:8px 0;color:var(--text)">
+<button class="btn primary" id="sendFile" data-tr="Dosyayı araca gönder" data-en="Send the file to the car">Dosyayı araca gönder</button>
+<div class="msg" id="msgF"></div></div>
 <div class="card"><h2 data-tr="📍 Android Auto / CarPlay ile gidenler" data-en="📍 Driving with Android Auto / CarPlay">📍 Android Auto / CarPlay ile gidenler</h2>
 <p class="hint" data-tr="Araç, telefonda Android Auto / CarPlay'e yazılan hedefi göremez. Hedefi haritada bulup Paylaş ile buraya gönderin: araç rotadaki yokuşlara bakar (uzun yokuş varsa bataryayı önceden doldurur) ve Yol tarifi / Telefona gönder seçeneklerini gösterir. Google Maps, Apple Haritalar, Yandex ve Waze linkleri ya da 37.4297, 34.8742 gibi koordinat olur." data-en="The car can't see a destination typed into Android Auto / CarPlay on the phone. Find it on the map and Share it here: the car checks the route's climbs (fills the battery first if a long climb is ahead) and shows Directions / Send to phone. Google Maps, Apple Maps, Yandex and Waze links or coordinates like 37.4297, 34.8742 work.">…</p></div>
 <div class="card"><h2 data-tr="Android: Paylaş menüsüne ekle" data-en="Android: add to the Share menu">Android: Paylaş menüsüne ekle</h2>
@@ -59,6 +64,14 @@ document.getElementById('send').onclick=async()=>{const m=document.getElementByI
  try{const r=await fetch('https://ntfy.sh/bydsmartdrive-link-'+c.toLowerCase(),{method:'POST',body:u});
   if(!r.ok)throw new Error(r.status);m.className='msg ok';m.textContent=t('Gönderildi. Araç açık ve internete bağlıysa birkaç saniye içinde gelir.','Sent. If the car is on and online it arrives within seconds.')}
  catch(e){m.className='msg err';m.textContent=t('Gönderilemedi, internet bağlantısını kontrol edin.','Could not send, check your internet connection.')}};
+document.getElementById('sendFile').onclick=async()=>{const m=document.getElementById('msgF');const c=norm(code.value);const f=document.getElementById('file').files[0];
+ if(!c){m.className='msg err';m.textContent=t('Aracın kodunu kontrol edin (8 hane).','Check the car code (8 characters).');return}
+ if(!f){m.className='msg err';m.textContent=t('Önce bir dosya seçin.','Pick a file first.');return}
+ if(f.size>15*1024*1024){m.className='msg err';m.textContent=t('Dosya 15 MB sınırını aşıyor.','The file is larger than 15 MB.');return}
+ S.set('code',c.slice(0,4)+'-'+c.slice(4));m.className='msg';m.textContent=t('Gönderiliyor… ','Sending… ')+Math.round(f.size/1024)+' KB';
+ try{const r=await fetch('https://ntfy.sh/bydsmartdrive-link-'+c.toLowerCase()+'?filename='+encodeURIComponent(f.name),{method:'PUT',body:f});
+  if(!r.ok)throw new Error(r.status);m.className='msg ok';m.textContent=t('Gönderildi. Araç açık ve internete bağlıysa birkaç saniye içinde Bildirimler listesine düşer.','Sent. If the car is on and online it shows up in Notifications within seconds.')}
+ catch(e){m.className='msg err';m.textContent=t('Gönderilemedi (','Could not send (')+e.message+t('). İnternet bağlantısını kontrol edin.','). Check your internet connection.')}};
 lang();
 if(shared&&norm(code.value))document.getElementById('send').click();
 </script></body></html>

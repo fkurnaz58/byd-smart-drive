@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BYD Smart Drive · Yedek</title><meta name="theme-color" content="#0E1A30">
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Smart Drive"><meta name="apple-mobile-web-app-status-bar-style" content="black">
+<style>
+:root{--bg:#0E1A30;--card:#15264A;--border:#223A66;--tile:#11203E;--btn:#1B3260;--text:#F2F6FC;--sub:#A8B9D6;--muted:#7A8DB0;--accent:#2E86F5;--ok:#3BD18A;--warn:#FFB547}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:720px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:26px;margin:8px 0 4px;font-weight:650;letter-spacing:-.01em}h2{font-size:18px;margin:0 0 10px;font-weight:600}
+.by{color:var(--sub);margin:0 0 18px}.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin:0 0 14px}
+.hint{color:var(--sub);font-size:14px;margin:6px 0 0}.btn{display:block;width:100%;text-align:center;border:0;border-radius:14px;padding:14px 16px;font:600 17px system-ui,sans-serif;background:var(--btn);color:var(--text);text-decoration:none;cursor:pointer;margin-top:12px}
+.btn.primary{background:var(--accent);color:#fff}.row{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid var(--border)}
+.row:first-of-type{border-top:0}.row label{flex:1;font-size:15px}.val{min-width:52px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+input[type=range]{width:100%;accent-color:var(--accent)}input[type=text]{width:100%;background:var(--tile);color:var(--text);border:1px solid var(--border);border-radius:12px;padding:12px 14px;font:600 20px ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase}
+.seg{display:flex;background:var(--tile);border-radius:10px;padding:3px}.seg button{border:0;background:none;color:var(--sub);padding:6px 12px;border-radius:8px;font-weight:600}
+.seg button.on{background:var(--accent);color:#fff}.sw{appearance:none;width:46px;height:28px;border-radius:14px;background:var(--btn);position:relative;flex:none;cursor:pointer}
+.sw:checked{background:var(--ok)}.sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.15s}.sw:checked::after{left:21px}
+.slider{padding:10px 0;border-top:1px solid var(--border)}.slider .top{display:flex;justify-content:space-between;gap:10px}
+.msg{margin-top:12px;font-weight:600}.ok{color:var(--ok)}.err{color:var(--warn)}.lang{float:right}.small{font-size:13px;color:var(--muted)}
+a{color:var(--accent)}
+.nav{position:sticky;top:0;z-index:9;background:rgba(14,26,48,.96);border-bottom:1px solid var(--border);padding:env(safe-area-inset-top) 0 0}.nav div{max-width:720px;margin:0 auto;display:flex;gap:5px;padding:8px 8px;flex-wrap:wrap;justify-content:center}.nav a,.nav button{flex:none;border:0;border-radius:10px;padding:7px 9px;background:var(--btn);color:var(--text);font:600 14px system-ui,sans-serif;text-decoration:none;cursor:pointer}.nav a.on{background:var(--accent);color:#fff}
+</style></head>
+<body><nav class="nav"><div><button type="button" onclick="if(history.length>1)history.back();else location.href='index.html'" data-tr="‹ Geri" data-en="‹ Back">‹ Geri</button><a href="index.html" data-tr="⌂ Ana" data-en="⌂ Home">⌂ Ana</a><a href="ekran.html" data-tr="Ekran" data-en="Screen">Ekran</a><a href="durum.html" data-tr="Durum" data-en="Status">Durum</a><a href="gonder.html" data-tr="Gönder" data-en="Send">Gönder</a><a href="yedek.html" data-tr="Yedek" data-en="Backup">Yedek</a><a href="ayarlar.html" data-tr="Ayarlar" data-en="Settings">Ayarlar</a></div></nav><script>(function(){var p=location.pathname.split("/").pop()||"index.html";document.querySelectorAll(".nav a").forEach(function(a){if(a.getAttribute("href")==p)a.className="on"})})()</script><main>
+<div class="seg lang"><button data-l="tr" class="on">TR</button><button data-l="en">EN</button></div>
+<h1 data-tr="Yedek" data-en="Backup">Yedek</h1><p class="by"><a href="index.html">BYD Smart Drive</a> · by Fatih Kurnaz</p>
+<div class="card"><h2 data-tr="Aracın kodu" data-en="Car code">Aracın kodu</h2>
+<input type="text" id="code" placeholder="K7Q2-M9XD" maxlength="9" autocomplete="off">
+<p class="hint" data-tr="Araçta Smart Drive: Menü > Sürüş ve Yolculuk > Telefon Bağlantısı (QR kodu okutursanız kod kendiliğinden dolar). Araçta Menü > Yedekle ve Geri Yükle > Telefondan Yedek Alma ve Geri Gönderme: Açık olmalı (varsayılan açık)." data-en="In the car: Smart Drive Menu > Driving and Trips > Phone Link (scan the QR and the code fills in). In the car Menu > Back Up and Restore > Phone Backup and Restore must be On (on by default).">…</p></div>
+<div class="card"><h2 data-tr="Araçtan telefona" data-en="Car to phone">Araçtan telefona</h2>
+<p class="hint" data-tr="Araç açık ve internete bağlıyken o anki yedeği telefona indirir. İndirdikten sonra İndir ile telefona, Paylaş ile Google Drive'a kaydedin; dosya 3 saat sonra internetten silinir. BYD bulut hesabınız ve giriş anahtarlarınız yedeğe girmez." data-en="While the car is on and online it downloads the current backup to the phone. Then save it with Download, or with Share to Google Drive; the file is deleted from the internet after 3 hours. Your BYD cloud account and sign-in keys are not in it.">…</p>
+<button class="btn primary" id="get" data-tr="Araçtan yedeği al" data-en="Get the backup from the car">Araçtan yedeği al</button>
+<button class="btn" id="list" data-tr="Yedekleri göster" data-en="Show backups">Yedekleri göster</button>
+<div class="msg" id="msg"></div><div id="files"></div></div>
+<div class="card"><h2 data-tr="Telefondan araca" data-en="Phone to car">Telefondan araca</h2>
+<p class="hint" data-tr="Telefonunuzdaki ya da Drive'daki bir Smart Drive yedeğini (.json) seçip araca gönderin. Araçta geri yüklensin mi diye sorulur; onaylayana kadar hiçbir ayar değişmez, onaylarsanız önce mevcut ayarlar araca yedeklenir. Araç kapalıysa 3 saat içinde açılınca sorulur." data-en="Pick a Smart Drive backup (.json) on your phone or in Drive and send it to the car. The car asks whether to restore it; nothing changes until you confirm, and the current settings are backed up to the car first. If the car is off it asks when it starts (within 3 hours).">…</p>
+<input type="file" id="file" accept=".json,application/json" style="margin:8px 0;color:var(--text)">
+<button class="btn primary" id="put" data-tr="Araca gönder" data-en="Send to car">Araca gönder</button>
+<div class="msg" id="msg2"></div></div>
+<p class="small" data-tr="Yedek internet üzerinden (ntfy.sh) aracın koduna özel bir kanala yazılır. Kodu kimseyle paylaşmayın." data-en="The backup travels over the internet (ntfy.sh) on a channel named after the car code. Do not share the code.">…</p>
+<style>.frow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 0;border-top:1px solid var(--border)}.frow span{flex:1;min-width:160px;font-size:14px}</style>
+</main><script>
+const S={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+let L=S.get('lang')||'tr';const t=(tr,en)=>L=='en'?en:tr;
+function lang(l){if(l){L=l;S.set('lang',l)}document.querySelectorAll('[data-'+L+']').forEach(e=>e.textContent=e.dataset[L]);document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.dataset.l==L))}
+document.querySelectorAll('.lang button').forEach(b=>b.onclick=()=>lang(b.dataset.l));
+const $=i=>document.getElementById(i);const code=$('code');code.value=S.get('code')||'';{const k=new URLSearchParams(location.search).get('kod');if(k){code.value=k;S.set('code',k)}}
+function norm(s){s=(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');if(s.length!=8||/[^ABCDEFGHJKLMNPQRSTUVWXYZ23456789]/.test(s))return null;return s}
+function say(id,ok,tx){const m=$(id);m.className='msg '+(ok===true?'ok':ok===false?'err':'');m.textContent=tx}
+function cc(id){const c=norm(code.value);if(!c){say(id,false,t('Aracın kodunu kontrol edin (8 hane).','Check the car code (8 characters).'));return null}S.set('code',c.slice(0,4)+'-'+c.slice(4));return c.toLowerCase()}
+async function events(c){const r=await fetch('https://ntfy.sh/bydsmartdrive-yedek-'+c+'/json?poll=1&since=3h');const tx=await r.text();const out=[];
+ tx.split('\n').forEach(l=>{if(!l.trim())return;try{out.push(JSON.parse(l))}catch(x){}});return out}
+async function save(a,share){try{const b=await (await fetch(a.url)).blob();const f=new File([b],a.name,{type:'application/json'});
+ if(share&&navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:a.name});return}
+ const u=URL.createObjectURL(f);const x=document.createElement('a');x.href=u;x.download=a.name;document.body.appendChild(x);x.click();x.remove();setTimeout(()=>URL.revokeObjectURL(u),5000)}
+ catch(e){if(e&&e.name=='AbortError')return;say('msg',false,t('Kaydedilemedi; dosyayı açıp tarayıcıdan indirin: ','Could not save; open the file and download it from the browser: ')+a.url)}}
+function show(evs){const F=$('files');F.innerHTML='';const now=Date.now()/1000;let n=0;
+ evs.filter(e=>e.attachment&&(!e.attachment.expires||e.attachment.expires>now)).reverse().forEach(e=>{n++;const a=e.attachment;
+  const r=document.createElement('div');r.className='frow';const s=document.createElement('span');s.textContent=a.name+' · '+new Date(e.time*1000).toLocaleString()+' · '+Math.round((a.size||0)/1024)+' KB';r.appendChild(s);
+  const d=document.createElement('button');d.className='btn primary';d.textContent=t('İndir','Download');d.onclick=()=>save(a,false);r.appendChild(d);
+  if(navigator.canShare){const p=document.createElement('button');p.className='btn';p.textContent=t('Paylaş / Drive\'a kaydet','Share / save to Drive');p.onclick=()=>save(a,true);r.appendChild(p)}
+  F.appendChild(r)});return n}
+$('list').onclick=async()=>{const c=cc('msg');if(!c)return;say('msg',null,t('Yükleniyor…','Loading…'));
+ try{const n=show(await events(c));say('msg',n>0,n?t('Son 3 saatteki yedekler:','Backups from the last 3 hours:'):t('Son 3 saatte yedek yok. "Araçtan yedeği al"a basın.','No backup in the last 3 hours. Tap "Get the backup from the car".'))}
+ catch(e){say('msg',false,t('Yüklenemedi, internet bağlantısını kontrol edin.','Could not load, check your internet connection.'))}};
+$('get').onclick=async()=>{const c=cc('msg');if(!c)return;const t0=Date.now()/1000-5;
+ try{const r=await fetch('https://ntfy.sh/bydsmartdrive-yedekiste-'+c,{method:'POST',body:JSON.stringify({type:'backup',at:Date.now()})});if(!r.ok)throw 0}
+ catch(e){say('msg',false,t('İstek gönderilemedi, internet bağlantısını kontrol edin.','Could not send the request, check your internet connection.'));return}
+ say('msg',null,t('İstendi, araç bekleniyor…','Requested, waiting for the car…'));
+ for(let i=0;i<20;i++){await new Promise(r=>setTimeout(r,3000));try{const ev=await events(c);if(ev.some(e=>e.attachment&&e.time>=t0)){show(ev);say('msg',true,t('Yedek geldi. İndir ya da Paylaş ile kaydedin.','The backup arrived. Save it with Download or Share.'));return}}catch(x){}}
+ say('msg',false,t('Araçtan cevap gelmedi. Araç açık ve internete bağlı mı? Araçta Smart Drive en az bir kez açılmış olmalı.','No answer from the car. Is it on and online? Smart Drive must have been opened at least once in the car.'))};
+$('put').onclick=async()=>{const c=cc('msg2');if(!c)return;const f=$('file').files[0];if(!f){say('msg2',false,t('Önce yedek dosyasını seçin.','Pick the backup file first.'));return}
+ let tx='';try{tx=await f.text();const o=JSON.parse(tx);if(o.format!='byd-smart-drive-backup')throw 0}catch(e){say('msg2',false,t('Bu dosya bir Smart Drive yedeği değil.','This file is not a Smart Drive backup.'));return}
+ const t0=Date.now()/1000-5;say('msg2',null,t('Gönderiliyor…','Sending…'));
+ try{const r=await fetch('https://ntfy.sh/bydsmartdrive-yedekiste-'+c+'?filename='+encodeURIComponent(f.name.endsWith('.json')?f.name:f.name+'.json'),{method:'PUT',body:tx});if(!r.ok)throw 0}
+ catch(e){say('msg2',false,t('Gönderilemedi, internet bağlantısını kontrol edin.','Could not send, check your internet connection.'));return}
+ say('msg2',null,t('Gönderildi. Araçta onay penceresi bekleniyor…','Sent. Waiting for the confirmation in the car…'));
+ for(let i=0;i<40;i++){await new Promise(r=>setTimeout(r,3000));try{const ev=await events(c);let st=null;
+  ev.forEach(e=>{if(e.time<t0||e.attachment)return;try{const o=JSON.parse(e.message);if(o.format=='smartdrive-backup-status')st=o.state}catch(x){}});
+  if(st=='restored'){say('msg2',true,t('Araçta geri yüklendi. Smart Drive yeniden açıldı.','Restored in the car. Smart Drive reopened.'));return}
+  if(st=='declined'){say('msg2',false,t('Araçta Vazgeç seçildi; hiçbir şey değişmedi.','Cancel was chosen in the car; nothing changed.'));return}
+  if(st=='invalid'){say('msg2',false,t('Araç dosyayı yedek olarak tanımadı.','The car did not recognise the file as a backup.'));return}
+  if(st=='waiting')say('msg2',null,t('Araçta "Geri yüklensin mi?" penceresi açıldı; araçta onaylayın.','"Restore?" is showing in the car; confirm it there.'))}catch(x){}}
+ say('msg2',null,t('Araçtan henüz cevap yok. Araç kapalıysa açılınca sorulur (3 saat içinde).','No answer from the car yet. If it is off it asks when it starts (within 3 hours).'))};
+lang();
+</script></body></html>
