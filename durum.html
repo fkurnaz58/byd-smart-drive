@@ -26,7 +26,7 @@ a{color:var(--accent)}
 <h1 data-tr="Araç durumu" data-en="Car status">Araç durumu</h1><p class="by"><a href="index.html">BYD Smart Drive</a> · by Fatih Kurnaz</p>
 <div class="card"><h2 data-tr="Aracın kodu" data-en="Car code">Aracın kodu</h2>
 <input type="text" id="code" placeholder="K7Q2-M9XD" maxlength="9" autocomplete="off">
-<p class="hint" data-tr="Araçtaki uygulamada Menü > Telefona Araç Durumu'nu açın; kod orada yazar." data-en="In the car app turn on Menu > Car Status to Phone; the code is shown there.">…</p>
+<p class="hint" data-tr="Araçta Smart Drive: Menü > Sürüş ve Yolculuk > Telefon Bağlantısı. Kod orada yazar; QR kodu telefonla okutursanız kendiliğinden dolar." data-en="In the car: Smart Drive Menu > Driving and Trips > Phone Link. The code is shown there; scan the QR code and it fills in by itself.">…</p>
 <button class="btn primary" id="go" data-tr="Durumu getir" data-en="Get status">Durumu getir</button></div>
 <div class="msg" id="msg"></div>
 <div id="nav"></div>
@@ -61,7 +61,7 @@ async function load(){const m=document.getElementById('msg');const c=norm(code.v
  S.set('code',c.slice(0,4)+'-'+c.slice(4));m.className='msg';m.textContent=t('Getiriliyor…','Loading…');
  try{const r=await fetch('https://ntfy.sh/bydsmartdrive-durum-'+c.toLowerCase()+'/json?poll=1&since=12h');const lines=(await r.text()).trim().split('\n');
   let d=null;for(const l of lines){try{const e=JSON.parse(l);if(e.event=='message'){const x=JSON.parse(e.message);if(x.format=='smartdrive-status')d=x}}catch(e){}}
-  if(!d){m.className='msg err';m.textContent=t('Son 12 saatte durum gelmedi. Araçta Telefona Araç Durumu açık mı?','No status in the last 12 hours. Is Car Status to Phone on in the car?');return}
+  if(!d){m.className='msg err';m.textContent=t('Son 12 saatte durum gelmedi. Araçta Menü > Sürüş ve Yolculuk > Telefon Bağlantısı > Araç Durumunu Telefonda Göster açık mı?','No status in the last 12 hours. Is Menu > Driving and Trips > Phone Link > Show Car Status on Phone on in the car?');return}
   m.textContent='';show(d)}catch(e){m.className='msg err';m.textContent=t('Getirilemedi, internet bağlantısını kontrol edin.','Could not load, check your internet connection.')}}
 // iPhone/Android: araçtan "Telefona gönder" ile gelen hedefler (son 6 saat), haritada açma düğmeleriyle.
 async function nav(c){const o=document.getElementById('nav');
