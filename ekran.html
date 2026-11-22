@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BYD Smart Drive · Ana ekran</title><meta name="theme-color" content="#0E1A30">
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Smart Drive"><meta name="apple-mobile-web-app-status-bar-style" content="black">
+<style>
+:root{--bg:#0E1A30;--card:#15264A;--border:#223A66;--tile:#11203E;--btn:#1B3260;--text:#F2F6FC;--sub:#A8B9D6;--muted:#7A8DB0;--accent:#2E86F5;--ok:#3BD18A;--warn:#FFB547}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:720px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:26px;margin:8px 0 4px;font-weight:650;letter-spacing:-.01em}h2{font-size:18px;margin:0 0 10px;font-weight:600}
+.by{color:var(--sub);margin:0 0 18px}.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin:0 0 14px}
+.hint{color:var(--sub);font-size:14px;margin:6px 0 0}.btn{display:block;width:100%;text-align:center;border:0;border-radius:14px;padding:14px 16px;font:600 17px system-ui,sans-serif;background:var(--btn);color:var(--text);text-decoration:none;cursor:pointer;margin-top:12px}
+.btn.primary{background:var(--accent);color:#fff}.row{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid var(--border)}
+.row:first-of-type{border-top:0}.row label{flex:1;font-size:15px}.val{min-width:52px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+input[type=range]{width:100%;accent-color:var(--accent)}input[type=text]{width:100%;background:var(--tile);color:var(--text);border:1px solid var(--border);border-radius:12px;padding:12px 14px;font:600 20px ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase}
+.seg{display:flex;background:var(--tile);border-radius:10px;padding:3px}.seg button{border:0;background:none;color:var(--sub);padding:6px 12px;border-radius:8px;font-weight:600}
+.seg button.on{background:var(--accent);color:#fff}.sw{appearance:none;width:46px;height:28px;border-radius:14px;background:var(--btn);position:relative;flex:none;cursor:pointer}
+.sw:checked{background:var(--ok)}.sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.15s}.sw:checked::after{left:21px}
+.slider{padding:10px 0;border-top:1px solid var(--border)}.slider .top{display:flex;justify-content:space-between;gap:10px}
+.msg{margin-top:12px;font-weight:600}.ok{color:var(--ok)}.err{color:var(--warn)}.lang{float:right}.small{font-size:13px;color:var(--muted)}
+a{color:var(--accent)}
+.nav{position:sticky;top:0;z-index:9;background:rgba(14,26,48,.96);border-bottom:1px solid var(--border);padding:env(safe-area-inset-top) 0 0}.nav div{max-width:720px;margin:0 auto;display:flex;gap:5px;padding:8px 8px;flex-wrap:wrap;justify-content:center}.nav a,.nav button{flex:none;border:0;border-radius:10px;padding:7px 9px;background:var(--btn);color:var(--text);font:600 14px system-ui,sans-serif;text-decoration:none;cursor:pointer}.nav a.on{background:var(--accent);color:#fff}
+</style></head>
+<body><nav class="nav"><div><button type="button" onclick="if(history.length>1)history.back();else location.href='index.html'" data-tr="‹ Geri" data-en="‹ Back">‹ Geri</button><a href="index.html" data-tr="⌂ Ana" data-en="⌂ Home">⌂ Ana</a><a href="ekran.html" data-tr="Ekran" data-en="Screen">Ekran</a><a href="durum.html" data-tr="Durum" data-en="Status">Durum</a><a href="gonder.html" data-tr="Gönder" data-en="Send">Gönder</a><a href="ayarlar.html" data-tr="Ayarlar" data-en="Settings">Ayarlar</a></div></nav><script>(function(){var p=location.pathname.split("/").pop()||"index.html";document.querySelectorAll(".nav a").forEach(function(a){if(a.getAttribute("href")==p)a.className="on"})})()</script><main>
+<div class="seg lang"><button data-l="tr" class="on">TR</button><button data-l="en">EN</button></div>
+<h1 data-tr="Ana ekran" data-en="Home screen">Ana ekran</h1><p class="by"><a href="index.html">BYD Smart Drive</a> · by Fatih Kurnaz</p>
+<div class="card"><h2 data-tr="Aracın kodu" data-en="Car code">Aracın kodu</h2>
+<input type="text" id="code" placeholder="K7Q2-M9XD" maxlength="9" autocomplete="off">
+<p class="hint" data-tr="Araçta Smart Drive: Menü > Sürüş ve Yolculuk > Telefon Bağlantısı > Ana Ekranı Telefonda Göster ve Düzenle: Açık. Kod orada yazar; QR kodu okutursanız kendiliğinden dolar." data-en="In the car: Smart Drive Menu > Driving and Trips > Phone Link > Show and Edit Home Screen on Phone: On. The code is shown there; scan the QR code and it fills in by itself.">…</p>
+<button class="btn primary" id="load" data-tr="Ekranı getir" data-en="Load the screen">Ekranı getir</button>
+<button class="btn" id="ask" data-tr="Araçtan yeni görüntü iste" data-en="Ask the car for a new picture">Araçtan yeni görüntü iste</button>
+<div class="msg" id="msg"></div></div>
+<div class="card" id="shotCard" hidden><h2 data-tr="Araçtaki ekran" data-en="Screen in the car">Araçtaki ekran</h2>
+<p class="small" id="shotAt"></p><img id="shot" alt="" style="width:100%;border-radius:12px;border:1px solid var(--border);display:block"></div>
+<div class="card" id="edCard" hidden><h2 data-tr="Kutuları düzenle" data-en="Edit the boxes">Kutuları düzenle</h2>
+<p class="hint" data-tr="Kutuyu ortasından sürükleyip taşıyın, sağ alt köşesinden çekip büyütüp küçültün. Dokunduğunuz kutu seçilir; aşağıdan gizleyebilirsiniz. Bitince Arabaya gönder." data-en="Drag a box by its middle to move it, pull its bottom-right corner to resize. Tap a box to select it; you can hide it below. When done, Send to car.">…</p>
+<div id="ed"></div>
+<div id="selBar" class="small" style="margin-top:10px"></div>
+<div id="hidBox" style="margin-top:8px"></div>
+<button class="btn primary" id="send" data-tr="Arabaya gönder" data-en="Send to car">Arabaya gönder</button>
+<button class="btn" id="reset" data-tr="Değişiklikleri sil (araçtaki hale dön)" data-en="Discard changes (back to the car's layout)">Değişiklikleri sil (araçtaki hale dön)</button>
+<button class="btn" id="restore" data-tr="Araçta eski düzene dön" data-en="Back to the old layout in the car">Araçta eski düzene dön</button>
+<div class="msg" id="msg2"></div></div>
+<p class="small" data-tr="Araç açık, internete bağlı ve Smart Drive ana ekranı öndeyken görüntü gelir (açılınca, istenince ve 10 dakikada bir). Görüntüler 3 saat sonra silinir. Araç kapalıyken gönderdiğiniz düzen araç açılınca uygulanır." data-en="Pictures arrive while the car is on, online and the Smart Drive home screen is in front (on open, on request and every 10 minutes). Pictures are deleted after 3 hours. A layout sent while the car is off is applied when it starts.">…</p>
+<style>#ed{position:relative;background:var(--tile);border:1px solid var(--border);border-radius:12px;overflow:hidden;touch-action:none;margin-top:10px}
+.bx{position:absolute;border:1.5px solid #4C7BD9;background:rgba(46,134,245,.18);border-radius:8px;color:var(--text);font-size:11px;line-height:1.2;padding:3px 4px;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none}
+.bx.sel{border-color:var(--warn);background:rgba(255,181,71,.22);z-index:50}.bx .rz{position:absolute;right:0;bottom:0;width:22px;height:22px;background:linear-gradient(135deg,transparent 50%,var(--accent) 50%);border-radius:0 0 7px 0}
+.bx.sel .rz{background:linear-gradient(135deg,transparent 50%,var(--warn) 50%)}.chip{display:inline-block;border:0;border-radius:10px;padding:7px 10px;margin:4px 6px 0 0;background:var(--btn);color:var(--text);font:600 14px system-ui}</style>
+</main><script>
+const S={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+let L=S.get('lang')||'tr';const t=(tr,en)=>L=='en'?en:tr;
+function lang(l){L=l;S.set('lang',l);document.querySelectorAll('[data-'+L+']').forEach(e=>e.textContent=e.dataset[L]);document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.dataset.l==L));draw()}
+document.querySelectorAll('.lang button').forEach(b=>b.onclick=()=>lang(b.dataset.l));
+const code=document.getElementById('code');code.value=S.get('code')||'';{const k=new URLSearchParams(location.search).get('kod');if(k){code.value=k;S.set('code',k)}}
+function norm(s){s=(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');if(s.length!=8||/[^ABCDEFGHJKLMNPQRSTUVWXYZ23456789]/.test(s))return null;return s}
+const $=i=>document.getElementById(i);
+function say(id,ok,tx){const m=$(id);m.className='msg '+(ok===true?'ok':ok===false?'err':'');m.textContent=tx}
+let lay=null,pos=[],hid=[],sel=null,k=1;
+function ago(ms){const m=Math.round((Date.now()-ms)/60000);return m<1?t('az önce','just now'):m<60?m+t(' dk önce',' min ago'):Math.floor(m/60)+t(' sa ',' h ')+(m%60)+t(' dk önce',' min ago')}
+async function load(){const c=norm(code.value);if(!c){say('msg',false,t('Aracın kodunu kontrol edin (8 hane).','Check the car code (8 characters).'));return}
+ S.set('code',c.slice(0,4)+'-'+c.slice(4));say('msg',null,t('Yükleniyor…','Loading…'));
+ try{const r=await fetch('https://ntfy.sh/bydsmartdrive-ekran-'+c.toLowerCase()+'/json?poll=1&since=12h');const tx=await r.text();
+  let img=null,js=null;const now=Date.now()/1000;
+  tx.split('\n').forEach(l=>{if(!l.trim())return;try{const e=JSON.parse(l);const a=e.attachment;if(!a||(a.expires&&a.expires<now))return;
+   if(a.name=='ekran.jpg')img={url:a.url,t:e.time*1000};if(a.name=='duzen.json')js={url:a.url,t:e.time*1000}}catch(x){}});
+  if(img){$('shot').src=img.url;$('shotAt').textContent=t('Son görüntü: ','Last picture: ')+new Date(img.t).toLocaleString()+' ('+ago(img.t)+')';$('shotCard').hidden=false}
+  if(js){const o=await (await fetch(js.url)).json();lay=o;$('edCard').hidden=false;reset()}
+  if(!img&&!js){say('msg',false,t('Son 3 saatte görüntü yok. Araçta ayar açık mı, Smart Drive ana ekranı önde mi? Araç açıksa "Araçtan yeni görüntü iste"ye basın.','No picture in the last 3 hours. Is the option on in the car and the Smart Drive home screen in front? If the car is on, tap "Ask the car for a new picture".'));return}
+  say('msg',true,t('Yüklendi.','Loaded.'))}
+ catch(e){say('msg',false,t('Yüklenemedi, internet bağlantısını kontrol edin.','Could not load, check your internet connection.'))}}
+async function cmd(o,id){const c=norm(code.value);if(!c){say(id,false,t('Aracın kodunu kontrol edin (8 hane).','Check the car code (8 characters).'));return false}
+ o.at=Date.now();try{const r=await fetch('https://ntfy.sh/bydsmartdrive-ekranset-'+c.toLowerCase(),{method:'POST',body:JSON.stringify(o)});if(!r.ok)throw 0;return true}
+ catch(e){say(id,false,t('Gönderilemedi, internet bağlantısını kontrol edin.','Could not send, check your internet connection.'));return false}}
+function reset(){if(!lay)return;pos=(lay.pos||[]).map(q=>q.slice());hid=(lay.hidden||[]).slice();sel=null;draw();
+ if(!lay.free||!pos.length)say('msg2',false,t('Araçta kutular serbest yerleşimde değil; burada düzenlenemiyor. Araçta Ekranı kişiselleştir > Serbest yerleşim açılınca gelir.','Boxes in the car are not in free layout, so they cannot be edited here. Turn on free layout in the car first.'));else say('msg2',null,'')}
+function nm(id){return (lay&&lay.names&&lay.names[id])||id}
+function draw(){const E=$('ed');if(!E||!lay)return;E.innerHTML='';const W=lay.baseW||1000;k=E.clientWidth/W;let H=0;
+ pos.forEach((q,i)=>{const [id,x,y,w,h]=q;if(hid.includes(id))return;H=Math.max(H,y+h);
+  const b=document.createElement('div');b.className='bx'+(sel==id?' sel':'');b.style.cssText+='left:'+x*k+'px;top:'+y*k+'px;width:'+w*k+'px;height:'+h*k+'px;z-index:'+(sel==id?50:i+1);
+  b.textContent=nm(id);const rz=document.createElement('div');rz.className='rz';b.appendChild(rz);drag(b,q,false);drag(rz,q,true);E.appendChild(b)});
+ E.style.height=Math.max(200,(H+20)*k)+'px';
+ $('selBar').innerHTML='';if(sel){const s=pos.find(q=>q[0]==sel);$('selBar').textContent=t('Seçili: ','Selected: ')+nm(sel)+(s?'  ·  '+s[3]+' × '+s[4]+' dp':'')+'  ';
+  const h=document.createElement('button');h.className='chip';h.textContent=t('Bu kutuyu gizle','Hide this box');h.onclick=()=>{hid.push(sel);sel=null;draw()};$('selBar').appendChild(h)}
+ const HB=$('hidBox');HB.innerHTML='';const hs=hid.filter(id=>lay.names&&lay.names[id]);if(hs.length){const p=document.createElement('div');p.className='small';p.textContent=t('Gizli kutular (göstermek için dokunun):','Hidden boxes (tap to show):');HB.appendChild(p);
+  hs.forEach(id=>{const c=document.createElement('button');c.className='chip';c.textContent='＋ '+nm(id);c.onclick=()=>{hid=hid.filter(x=>x!=id);
+   if(!pos.find(q=>q[0]==id)){let y=0;pos.forEach(q=>{if(!hid.includes(q[0]))y=Math.max(y,q[2]+q[4])});pos.push([id,0,y+10,Math.min(lay.baseW||600,600),160])}sel=id;draw()};HB.appendChild(c)})}}
+function drag(el,q,rs){el.addEventListener('pointerdown',ev=>{ev.preventDefault();ev.stopPropagation();sel=q[0];
+ const sx=ev.clientX,sy=ev.clientY,o=q.slice();let moved=false;
+ const mv=e=>{const dx=(e.clientX-sx)/k,dy=(e.clientY-sy)/k;if(Math.abs(dx)+Math.abs(dy)>3)moved=true;const g=v=>Math.round(v/4)*4;
+  if(rs){q[3]=Math.max(60,g(o[3]+dx));q[4]=Math.max(40,g(o[4]+dy))}else{q[1]=Math.max(0,g(o[1]+dx));q[2]=Math.max(0,g(o[2]+dy))}
+  const b=el.classList.contains('bx')?el:el.parentNode;b.style.left=q[1]*k+'px';b.style.top=q[2]*k+'px';b.style.width=q[3]*k+'px';b.style.height=q[4]*k+'px'};
+ const up=()=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);removeEventListener('pointercancel',up);draw()};
+ addEventListener('pointermove',mv);addEventListener('pointerup',up);addEventListener('pointercancel',up);
+ document.querySelectorAll('.bx.sel').forEach(x=>x.classList.remove('sel'));(el.classList.contains('bx')?el:el.parentNode).classList.add('sel')})}
+$('load').onclick=load;
+$('ask').onclick=async()=>{if(await cmd({type:'shot'},'msg')){say('msg',null,t('İstendi. Araç açıksa birkaç saniye içinde gelir…','Requested. If the car is on it arrives in a few seconds…'));setTimeout(load,9000)}};
+$('reset').onclick=reset;
+$('send').onclick=async()=>{if(!lay)return;if(await cmd({type:'layout',key:lay.key,pos:pos,hidden:hid},'msg2')){say('msg2',true,t('Gönderildi. Araç açıksa birkaç saniye içinde uygulanır, sonra yeni görüntü gelir.','Sent. If the car is on it applies within seconds, then a new picture arrives.'));setTimeout(load,10000)}};
+$('restore').onclick=async()=>{if(await cmd({type:'restore'},'msg2')){say('msg2',true,t('İstendi. Araç eski düzene döner.','Requested. The car goes back to the old layout.'));setTimeout(load,10000)}};
+addEventListener('resize',draw);lang(L);if(code.value)load();
+</script></body></html>
