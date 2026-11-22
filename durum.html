@@ -20,8 +20,9 @@ input[type=range]{width:100%;accent-color:var(--accent)}input[type=text]{width:1
 .slider{padding:10px 0;border-top:1px solid var(--border)}.slider .top{display:flex;justify-content:space-between;gap:10px}
 .msg{margin-top:12px;font-weight:600}.ok{color:var(--ok)}.err{color:var(--warn)}.lang{float:right}.small{font-size:13px;color:var(--muted)}
 a{color:var(--accent)}
+.nav{position:sticky;top:0;z-index:9;background:rgba(14,26,48,.96);border-bottom:1px solid var(--border);padding:env(safe-area-inset-top) 0 0}.nav div{max-width:720px;margin:0 auto;display:flex;gap:5px;padding:8px 8px;flex-wrap:wrap;justify-content:center}.nav a,.nav button{flex:none;border:0;border-radius:10px;padding:7px 9px;background:var(--btn);color:var(--text);font:600 14px system-ui,sans-serif;text-decoration:none;cursor:pointer}.nav a.on{background:var(--accent);color:#fff}
 </style></head>
-<body><main>
+<body><nav class="nav"><div><button type="button" onclick="if(history.length>1)history.back();else location.href='index.html'" data-tr="‹ Geri" data-en="‹ Back">‹ Geri</button><a href="index.html" data-tr="Ana sayfa" data-en="Home">Ana sayfa</a><a href="durum.html" data-tr="Durum" data-en="Status">Durum</a><a href="gonder.html" data-tr="Gönder" data-en="Send">Gönder</a><a href="ayarlar.html" data-tr="Ayarlar" data-en="Settings">Ayarlar</a></div></nav><script>(function(){var p=location.pathname.split("/").pop()||"index.html";document.querySelectorAll(".nav a").forEach(function(a){if(a.getAttribute("href")==p)a.className="on"})})()</script><main>
 <div class="seg lang"><button data-l="tr" class="on">TR</button><button data-l="en">EN</button></div>
 <h1 data-tr="Araç durumu" data-en="Car status">Araç durumu</h1><p class="by"><a href="index.html">BYD Smart Drive</a> · by Fatih Kurnaz</p>
 <div class="card"><h2 data-tr="Aracın kodu" data-en="Car code">Aracın kodu</h2>
