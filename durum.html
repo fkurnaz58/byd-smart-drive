@@ -57,7 +57,12 @@ function show(d,old){last=d;d._old=old;const o=document.getElementById('out');
  +row(t('Ön cam','Defrost'),d.defrost?t('açık','on'):t('kapalı','off'))
  +row(t('Koltuk ısıtma (sürücü / yolcu)','Seat heat (driver / pass.)'),lvl(d.heat1)+' / '+lvl(d.heat2))
  +row(t('Koltuk soğutma (sürücü / yolcu)','Seat cool (driver / pass.)'),lvl(d.vent1)+' / '+lvl(d.vent2))
- +row('Smart Drive',d.smartDrive?t('açık','on'):t('kapalı','off'))+row(t('Bugün yakıt','Fuel today'),d.todayCost+' TL')+'</div>'}
+ +row('Smart Drive',d.smartDrive?t('açık','on'):t('kapalı','off'))+row(t('Bugün yakıt','Fuel today'),d.todayCost+' TL')+'</div>'
+ +(d.lastTrip?'<div class="card"><h2>'+t('Son yolculuk','Last trip')+'</h2><pre style="white-space:pre-wrap;font:inherit;margin:0">'+esc(d.lastTrip)+'</pre><p><button class="btn" onclick="shareTxt(last.lastTrip)">'+t('Paylaş','Share')+'</button></p></div>':'')
+ +(d.week?'<div class="card"><h2>'+t('Haftalık sessizlik karnesi','Weekly quietness report')+'</h2><pre style="white-space:pre-wrap;font:inherit;margin:0">'+esc(d.week)+'</pre><p><button class="btn" onclick="shareTxt(last.week)">'+t('Paylaş','Share')+'</button></p></div>':'')}
+function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
+function shareTxt(s){s=s+'
+— BYD Smart Drive';if(navigator.share)navigator.share({text:s}).catch(()=>{});else if(navigator.clipboard)navigator.clipboard.writeText(s).then(()=>alert(t('Kopyalandı','Copied')))}
 async function load(){const m=document.getElementById('msg');const c=norm(code.value);
  if(!c){m.className='msg err';m.textContent=t('Aracın kodunu kontrol edin (8 hane).','Check the car code (8 characters).');return}
  S.set('code',c.slice(0,4)+'-'+c.slice(4));m.className='msg';m.textContent=t('Getiriliyor…','Loading…');

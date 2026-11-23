@@ -1,0 +1,12 @@
+{
+  "about": "BYD Smart Drive hazır ayar paketleri. Uygulama yalnız hız sınırları, sollama gazı, süzülme ve otoyol sessizliği sayılarını uygular; batarya tamponuna dokunmaz.",
+  "packs": [
+    {
+      "tr": "Kanalın önerisi · Şehir ve otoyol",
+      "en": "Channel pick · City and motorway",
+      "dtr": "Şehirde 60'a kadar Eco ve güçlü rejen, 90 üstü yol, 120 üstü Sport; otoyolda %55 hedef ve sessiz otoyol açık. Seal U DM-i ile yolda denenmiş ayar.",
+      "den": "Eco and strong regen up to 60 in town, road above 90, Sport above 120; 55% long-road target and quiet motorway on. Tested on the road with a Seal U DM-i.",
+      "v": {"band_city": 60, "band_hw": 90, "band_sport": 120, "pedal_overtake": 60, "coast_on": 1, "soc_hw": 55, "hwb_quiet": 1, "hwb_rpm": 5000}
+    }
+  ]
+}
