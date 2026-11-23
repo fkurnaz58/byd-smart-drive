@@ -37,16 +37,17 @@ a{color:var(--accent)}
 </main><script>
 const S={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 let L=S.get('lang')||'tr';const t=(tr,en)=>L=='en'?en:tr;let last=null;
-function lang(){document.querySelectorAll('[data-'+L+']').forEach(e=>e.textContent=e.dataset[L]);document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.dataset.l==L));if(last)show(last)}
+function lang(){document.querySelectorAll('[data-'+L+']').forEach(e=>e.textContent=e.dataset[L]);document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.dataset.l==L));if(last)show(last,last._old)}
 document.querySelectorAll('.lang button').forEach(b=>b.onclick=()=>{L=b.dataset.l;S.set('lang',L);lang()});
 const code=document.getElementById('code');code.value=S.get('code')||'';{const k=new URLSearchParams(location.search).get('kod');if(k){code.value=k;S.set('code',k)}}
 function norm(s){s=(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');if(s.length!=8||/[^ABCDEFGHJKLMNPQRSTUVWXYZ23456789]/.test(s))return null;return s}
 const lvl=v=>v>0?String(v):t('kapalı','off');
 function row(k,v){return '<div class="row"><label>'+k+'</label><b>'+v+'</b></div>'}
-function show(d){last=d;const ago=Math.max(0,Math.round((Date.now()-d.t)/60000));const o=document.getElementById('out');
+function agoTxt(ms){const mi=Math.max(0,Math.round((Date.now()-ms)/60000));if(mi<1)return t('şimdi','now');if(mi<60)return mi+t(' dk önce',' min ago');const h=Math.round(mi/60);if(h<48)return h+t(' saat önce',' h ago');return Math.round(h/24)+t(' gün önce',' days ago')}
+function show(d,old){last=d;d._old=old;const o=document.getElementById('out');
  const mode={1:'Normal',2:'Eco',3:'Sport',4:t('Kar','Snow')}[d.driveMode]||'—';
  const ty=['tyreFL','tyreFR','tyreRL','tyreRR'].map(k=>d[k]!=null?d[k].toFixed(1):'—').join(' · ');
- o.innerHTML='<div class="card"><h2>'+t('Son güncelleme: ','Last update: ')+(ago<1?t('şimdi','now'):ago+t(' dk önce',' min ago'))+'</h2>'
+ o.innerHTML='<div class="card"><h2>'+(old?t('Son bilinen durum: ','Last known status: '):t('Son güncelleme: ','Last update: '))+agoTxt(d.t)+'</h2>'+(old?'<p class="hint">'+t('Araç şu an kapalı ya da internete bağlı değil; bu, araç en son açıkken gönderdiği durum. Araç açılınca kendiliğinden yenilenir.','The car is off or offline right now; this is the status it sent when it was last on. It refreshes when the car is on.')+'</p>':'')
  +row(t('Batarya','Battery'),d.soc!=null?'%'+Math.round(d.soc)+(d.saveSwitch?(d.saveSwitch==2?' · SAVE':' · AUTO')+(d.socTarget!=null?' %'+Math.round(d.socTarget):''):''):'—')
  +row(t('Kilit','Lock'),d.lock==null?'—':d.lock>=1?t('🔒 Kilitli','🔒 Locked'):t('🔓 Açık','🔓 Unlocked'))
  +row(t('Dış sıcaklık','Outside temp'),d.outTemp!=null?Math.round(d.outTemp)+'°C':'—')
@@ -62,7 +63,8 @@ async function load(){const m=document.getElementById('msg');const c=norm(code.v
  S.set('code',c.slice(0,4)+'-'+c.slice(4));m.className='msg';m.textContent=t('Getiriliyor…','Loading…');
  try{const r=await fetch('https://ntfy.sh/bydsmartdrive-durum-'+c.toLowerCase()+'/json?poll=1&since=12h');const lines=(await r.text()).trim().split('\n');
   let d=null;for(const l of lines){try{const e=JSON.parse(l);if(e.event=='message'){const x=JSON.parse(e.message);if(x.format=='smartdrive-status')d=x}}catch(e){}}
-  if(!d){m.className='msg err';m.textContent=t('Son 12 saatte durum gelmedi. Araçta Menü > Sürüş ve Yolculuk > Telefon Bağlantısı > Araç Durumunu Telefonda Göster açık mı?','No status in the last 12 hours. Is Menu > Driving and Trips > Phone Link > Show Car Status on Phone on in the car?');return}
+  const key='last_'+c;if(d)S.set(key,JSON.stringify(d));else{try{d=JSON.parse(S.get(key)||'null')}catch(x){d=null}if(d&&d.format=='smartdrive-status'){m.textContent='';show(d,true);return}}
+  if(!d){m.className='msg err';m.textContent=t('Son 12 saatte durum gelmedi. Araç durumu yalnız araç açıkken gönderir ve gönderilen durum 12 saat saklanır; araç uzun süre kapalı kaldıysa açılınca gelir. Bu sayfa bundan sonra son durumu telefonda saklar. Araç açıkken de gelmiyorsa: Menü > Sürüş ve Yolculuk > Telefon Bağlantısı > Araç Durumunu Telefonda Göster açık mı?','No status in the last 12 hours. The car sends status only while it is on, and it is kept for 12 hours; if the car was off longer, it arrives when the car is on. From now on this page keeps the last status on the phone. If it still does not come while the car is on: is Menu > Driving and Trips > Phone Link > Show Car Status on Phone on?');return}
   m.textContent='';show(d)}catch(e){m.className='msg err';m.textContent=t('Getirilemedi, internet bağlantısını kontrol edin.','Could not load, check your internet connection.')}}
 // iPhone/Android: araçtan "Telefona gönder" ile gelen hedefler (son 6 saat), haritada açma düğmeleriyle.
 async function nav(c){const o=document.getElementById('nav');
