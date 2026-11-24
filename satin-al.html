@@ -27,15 +27,16 @@ a{color:var(--accent)}
 <h1 data-tr="Tam sürüm · satın alma" data-en="Full version · purchase">Tam sürüm · satın alma</h1><p class="by"><a href="index.html">BYD Smart Drive</a> · by Fatih Kurnaz</p>
 <div class="card"><h2 data-tr="1 · Ödeme (havale / EFT)" data-en="1 · Payment (bank transfer)">1 · Ödeme (havale / EFT)</h2>
 <div id="pay" class="hint" data-tr="Havale bilgisi yükleniyor…" data-en="Loading bank details…">Havale bilgisi yükleniyor…</div>
-<button class="btn" id="copy" style="display:none" data-tr="IBAN'ı kopyala" data-en="Copy IBAN">IBAN'ı kopyala</button></div>
-<div class="card"><h2 data-tr="2 · Satın alma talebi" data-en="2 · Purchase request">2 · Satın alma talebi</h2>
-<p class="hint" data-tr="Aracın kodu (araçta Menü > Hesap ve Destek > Tam Sürüm · Anahtar)." data-en="The car code (in the car: Menu > Account and Support > Full Version · Key).">…</p>
+<button class="btn" id="copy" style="display:none" data-tr="IBAN'ı kopyala" data-en="Copy IBAN">IBAN'ı kopyala</button>
+<p class="hint"><b data-tr="Araç kodu nerede?" data-en="Where is the car code?">Araç kodu nerede?</b> <span data-tr="Araçta Smart Drive'ı açın: Menü > Hesap ve Destek > Tam Sürüm · Anahtar. Ekranın üstünde &quot;Bu aracın cihaz kodu&quot; yazar (ABCDE-FGHJK gibi 10 harf/rakam). Bu sayfayı o ekrandaki QR kodunu okutarak açtıysanız kod aşağıda zaten yazılıdır." data-en="Open Smart Drive in the car: Menu > Account and Support > Full Version · Key. The top of the screen shows &quot;This car's device code&quot; (10 letters/digits like ABCDE-FGHJK). If you opened this page by scanning the QR code on that screen, the code is already filled in below.">…</span></p></div>
+<div class="card"><h2 data-tr="2 · Ödemeyi yaptım" data-en="2 · I have paid">2 · Ödemeyi yaptım</h2>
+<p class="hint" data-tr="Havaleyi yaptıktan sonra aracın kodunu kontrol edip aşağıdaki düğmeye dokunun. Ad ve iletişim isteğe bağlıdır." data-en="After the transfer, check the car code and tap the button below. Name and contact are optional.">…</p>
 <input type="text" id="code" placeholder="ABCDE-FGHJK" maxlength="11" autocomplete="off">
-<p></p><input type="text" id="name" style="text-transform:none;font:16px system-ui;letter-spacing:0" data-ph-tr="Adınız soyadınız" data-ph-en="Your name" placeholder="Adınız soyadınız">
-<p></p><input type="text" id="contact" style="text-transform:none;font:16px system-ui;letter-spacing:0" data-ph-tr="Telefon ya da e-posta" data-ph-en="Phone or e-mail" placeholder="Telefon ya da e-posta">
-<button class="btn primary" id="send" data-tr="Talep gönder" data-en="Send request">Talep gönder</button>
+<p></p><input type="text" id="name" style="text-transform:none;font:16px system-ui;letter-spacing:0" data-ph-tr="Adınız (isteğe bağlı)" data-ph-en="Your name (optional)" placeholder="Adınız (isteğe bağlı)">
+<p></p><input type="text" id="contact" style="text-transform:none;font:16px system-ui;letter-spacing:0" data-ph-tr="Telefon ya da e-posta (isteğe bağlı)" data-ph-en="Phone or e-mail (optional)" placeholder="Telefon ya da e-posta (isteğe bağlı)">
+<button class="btn primary" id="send" data-tr="Ödemeyi yaptım" data-en="I have paid">Ödemeyi yaptım</button>
 <div class="msg" id="msg"></div></div>
-<p class="small" data-tr="Ödeme görülünce anahtar bu araca özel hazırlanır; araç açık ve internete bağlıyken kendiliğinden etkinleşir. Yıllık 1200 TL." data-en="Once the payment is seen the key is made for this car only; it activates by itself while the car is on and online. 1200 TL per year.">…</p>
+<p class="small" data-tr="Ödeme kontrol edilince anahtar bu araca özel hazırlanır; araç açık ve internete bağlıyken kendiliğinden etkinleşir. Yıllık 1200 TL." data-en="Once the payment is seen the key is made for this car only; it activates by itself while the car is on and online. 1200 TL per year.">…</p>
 </main><script>
 const S={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 let L=S.get('lang')||'tr';const t=(tr,en)=>L=='en'?en:tr;
@@ -56,14 +57,15 @@ document.getElementById('copy').onclick=()=>{try{navigator.clipboard.writeText(P
 document.getElementById('send').onclick=async()=>{const m=document.getElementById('msg');const c=norm(code.value);
  const n=document.getElementById('name').value.trim(),ct=document.getElementById('contact').value.trim();
  if(c.length!=10){m.className='msg err';m.textContent=t('Aracın kodu 10 hane olmalı.','The car code must be 10 characters.');return}
- if(ct.length<5){m.className='msg err';m.textContent=t('Telefon ya da e-posta yazın.','Enter a phone or e-mail.');return}
+ if(!confirm(t('Havaleyi yaptınız mı?','Have you made the transfer?')))return;
  const cc=c.slice(0,5)+'-'+c.slice(5);S.set('liccode',cc);m.className='msg';m.textContent=t('Gönderiliyor…','Sending…');
  const to=['34ftk58','gmail.com'].join('@');
- const body={_subject:'[BYD Smart Drive] Satın alma talebi '+cc+' (telefon)',_template:'table',_captcha:'false','Ad / Name':n,'İletişim / Contact':ct,'Cihaz kodu / Device code':cc,'Dil / Language':L=='en'?'English':'Türkçe'};
+ const body={_subject:'[BYD Smart Drive] Ödeme yapıldı · '+cc+' (telefon)',_template:'table',_captcha:'false','Ad / Name':n,'İletişim / Contact':ct,'Cihaz kodu / Device code':cc,'Dil / Language':L=='en'?'English':'Türkçe'};
  if(ct.indexOf('@')>0)body.email=ct;
+ try{fetch('https://ntfy.sh/bydsmartdrive-odeme-rh5jaicfga',{method:'POST',headers:{'Title':'Odeme yapildi: '+cc,'Tags':'moneybag','Priority':'high'},body:'Araç kodu: '+cc+(n?'\nAd: '+n:'')+(ct?'\nİletişim: '+ct:'')+'\nBanka hesabını kontrol et, sonra anahtarı gönder. (telefondan)'}).catch(()=>{})}catch(e){}
  try{const r=await fetch('https://formsubmit.co/ajax/'+to,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(body)});
   const j=await r.json();if(String(j.success)!='true')throw new Error(j.message||r.status);
-  m.className='msg ok';m.textContent=t('✓ Talebiniz gönderildi. Yazdığınız telefon/e-postaya dönüş yapılacak.','✓ Request sent. You will be contacted at the phone/e-mail you gave.')}
+  m.className='msg ok';m.textContent=t('✓ Bildirildi. Ödeme kontrol edilince anahtar araca gelir ve kendiliğinden etkinleşir.','✓ Sent. Once the payment is checked the key comes to the car and activates by itself.')}
  catch(e){m.className='msg err';m.textContent=t('Gönderilemedi (','Could not send (')+e.message+t('). Biraz sonra yeniden deneyin.','). Please try again a bit later.')}};
 lang();
 </script></body></html>
