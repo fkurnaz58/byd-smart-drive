@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BYD Smart Drive · Satın al</title><meta name="theme-color" content="#0E1A30">
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Smart Drive"><meta name="apple-mobile-web-app-status-bar-style" content="black">
+<style>
+:root{--bg:#0E1A30;--card:#15264A;--border:#223A66;--tile:#11203E;--btn:#1B3260;--text:#F2F6FC;--sub:#A8B9D6;--muted:#7A8DB0;--accent:#2E86F5;--ok:#3BD18A;--warn:#FFB547}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:720px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:26px;margin:8px 0 4px;font-weight:650;letter-spacing:-.01em}h2{font-size:18px;margin:0 0 10px;font-weight:600}
+.by{color:var(--sub);margin:0 0 18px}.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin:0 0 14px}
+.hint{color:var(--sub);font-size:14px;margin:6px 0 0}.btn{display:block;width:100%;text-align:center;border:0;border-radius:14px;padding:14px 16px;font:600 17px system-ui,sans-serif;background:var(--btn);color:var(--text);text-decoration:none;cursor:pointer;margin-top:12px}
+.btn.primary{background:var(--accent);color:#fff}.row{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid var(--border)}
+.row:first-of-type{border-top:0}.row label{flex:1;font-size:15px}.val{min-width:52px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+input[type=range]{width:100%;accent-color:var(--accent)}input[type=text]{width:100%;background:var(--tile);color:var(--text);border:1px solid var(--border);border-radius:12px;padding:12px 14px;font:600 20px ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase}
+.seg{display:flex;background:var(--tile);border-radius:10px;padding:3px}.seg button{border:0;background:none;color:var(--sub);padding:6px 12px;border-radius:8px;font-weight:600}
+.seg button.on{background:var(--accent);color:#fff}.sw{appearance:none;width:46px;height:28px;border-radius:14px;background:var(--btn);position:relative;flex:none;cursor:pointer}
+.sw:checked{background:var(--ok)}.sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.15s}.sw:checked::after{left:21px}
+.slider{padding:10px 0;border-top:1px solid var(--border)}.slider .top{display:flex;justify-content:space-between;gap:10px}
+.msg{margin-top:12px;font-weight:600}.ok{color:var(--ok)}.err{color:var(--warn)}.lang{float:right}.small{font-size:13px;color:var(--muted)}
+a{color:var(--accent)}
+.nav{position:sticky;top:0;z-index:9;background:rgba(14,26,48,.96);border-bottom:1px solid var(--border);padding:env(safe-area-inset-top) 0 0}.nav div{max-width:720px;margin:0 auto;display:flex;gap:5px;padding:8px 8px;flex-wrap:wrap;justify-content:center}.nav a,.nav button{flex:none;border:0;border-radius:10px;padding:7px 9px;background:var(--btn);color:var(--text);font:600 14px system-ui,sans-serif;text-decoration:none;cursor:pointer}.nav a.on{background:var(--accent);color:#fff}
+</style></head>
+<body><nav class="nav"><div><button type="button" onclick="if(history.length>1)history.back();else location.href='index.html'" data-tr="‹ Geri" data-en="‹ Back">‹ Geri</button><a href="index.html" data-tr="⌂ Ana" data-en="⌂ Home">⌂ Ana</a><a href="ekran.html" data-tr="Ekran" data-en="Screen">Ekran</a><a href="durum.html" data-tr="Durum" data-en="Status">Durum</a><a href="gonder.html" data-tr="Gönder" data-en="Send">Gönder</a><a href="yedek.html" data-tr="Yedek" data-en="Backup">Yedek</a><a href="ayarlar.html" data-tr="Ayarlar" data-en="Settings">Ayarlar</a></div></nav><script>(function(){var p=location.pathname.split("/").pop()||"index.html";document.querySelectorAll(".nav a").forEach(function(a){if(a.getAttribute("href")==p)a.className="on"})})()</script><main>
+<div class="seg lang"><button data-l="tr" class="on">TR</button><button data-l="en">EN</button></div>
+<h1 data-tr="Tam sürüm · satın alma" data-en="Full version · purchase">Tam sürüm · satın alma</h1><p class="by"><a href="index.html">BYD Smart Drive</a> · by Fatih Kurnaz</p>
+<div class="card"><h2 data-tr="1 · Ödeme (havale / EFT)" data-en="1 · Payment (bank transfer)">1 · Ödeme (havale / EFT)</h2>
+<div id="pay" class="hint" data-tr="Havale bilgisi yükleniyor…" data-en="Loading bank details…">Havale bilgisi yükleniyor…</div>
+<button class="btn" id="copy" style="display:none" data-tr="IBAN'ı kopyala" data-en="Copy IBAN">IBAN'ı kopyala</button></div>
+<div class="card"><h2 data-tr="2 · Satın alma talebi" data-en="2 · Purchase request">2 · Satın alma talebi</h2>
+<p class="hint" data-tr="Aracın kodu (araçta Menü > Hesap ve Destek > Tam Sürüm · Anahtar)." data-en="The car code (in the car: Menu > Account and Support > Full Version · Key).">…</p>
+<input type="text" id="code" placeholder="ABCDE-FGHJK" maxlength="11" autocomplete="off">
+<p></p><input type="text" id="name" style="text-transform:none;font:16px system-ui;letter-spacing:0" data-ph-tr="Adınız soyadınız" data-ph-en="Your name" placeholder="Adınız soyadınız">
+<p></p><input type="text" id="contact" style="text-transform:none;font:16px system-ui;letter-spacing:0" data-ph-tr="Telefon ya da e-posta" data-ph-en="Phone or e-mail" placeholder="Telefon ya da e-posta">
+<button class="btn primary" id="send" data-tr="Talep gönder" data-en="Send request">Talep gönder</button>
+<div class="msg" id="msg"></div></div>
+<p class="small" data-tr="Ödeme görülünce anahtar bu araca özel hazırlanır; araç açık ve internete bağlıyken kendiliğinden etkinleşir. Yıllık 1200 TL." data-en="Once the payment is seen the key is made for this car only; it activates by itself while the car is on and online. 1200 TL per year.">…</p>
+</main><script>
+const S={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+let L=S.get('lang')||'tr';const t=(tr,en)=>L=='en'?en:tr;
+function lang(){document.querySelectorAll('[data-'+L+']').forEach(e=>e.textContent=e.dataset[L]);document.querySelectorAll('[data-ph-'+L+']').forEach(e=>e.placeholder=e.dataset['ph'+(L=='en'?'En':'Tr')]);document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.dataset.l==L));showPay()}
+document.querySelectorAll('.lang button').forEach(b=>b.onclick=()=>{L=b.dataset.l;S.set('lang',L);lang()});
+const norm=s=>(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+const code=document.getElementById('code');
+const q=new URLSearchParams(location.search).get('kod');
+code.value=q?q:(S.get('liccode')||'');
+let PAY=null;
+function showPay(){const el=document.getElementById('pay');if(!PAY){return}
+ const c=norm(code.value);const cc=c.length==10?c.slice(0,5)+'-'+c.slice(5):t('araç kodunuz','your car code');
+ el.textContent='';[t('Tutar: ','Amount: ')+(PAY.amount||'1200 TL'),PAY.bank,PAY.name,PAY.iban,t('Açıklama: ','Description: ')+cc].forEach(function(x,i){const d=document.createElement('div');d.textContent=x;if(i==3){d.style.font='600 18px ui-monospace,monospace';d.style.color='var(--text)'}el.appendChild(d)});
+ document.getElementById('copy').style.display='block'}
+fetch('odeme.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.iban){PAY=j;showPay()}else document.getElementById('pay').textContent=t('Havale bilgisi talebinize cevap olarak gelir.','Bank details come back in reply to your request.')}).catch(()=>{document.getElementById('pay').textContent=t('Havale bilgisi talebinize cevap olarak gelir.','Bank details come back in reply to your request.')});
+code.oninput=showPay;
+document.getElementById('copy').onclick=()=>{try{navigator.clipboard.writeText(PAY.iban.replace(/\s+/g,''));document.getElementById('copy').textContent=t('Kopyalandı ✓','Copied ✓')}catch(e){}};
+document.getElementById('send').onclick=async()=>{const m=document.getElementById('msg');const c=norm(code.value);
+ const n=document.getElementById('name').value.trim(),ct=document.getElementById('contact').value.trim();
+ if(c.length!=10){m.className='msg err';m.textContent=t('Aracın kodu 10 hane olmalı.','The car code must be 10 characters.');return}
+ if(ct.length<5){m.className='msg err';m.textContent=t('Telefon ya da e-posta yazın.','Enter a phone or e-mail.');return}
+ const cc=c.slice(0,5)+'-'+c.slice(5);S.set('liccode',cc);m.className='msg';m.textContent=t('Gönderiliyor…','Sending…');
+ const to=['34ftk58','gmail.com'].join('@');
+ const body={_subject:'[BYD Smart Drive] Satın alma talebi '+cc+' (telefon)',_template:'table',_captcha:'false','Ad / Name':n,'İletişim / Contact':ct,'Cihaz kodu / Device code':cc,'Dil / Language':L=='en'?'English':'Türkçe'};
+ if(ct.indexOf('@')>0)body.email=ct;
+ try{const r=await fetch('https://formsubmit.co/ajax/'+to,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(body)});
+  const j=await r.json();if(String(j.success)!='true')throw new Error(j.message||r.status);
+  m.className='msg ok';m.textContent=t('✓ Talebiniz gönderildi. Yazdığınız telefon/e-postaya dönüş yapılacak.','✓ Request sent. You will be contacted at the phone/e-mail you gave.')}
+ catch(e){m.className='msg err';m.textContent=t('Gönderilemedi (','Could not send (')+e.message+t('). Biraz sonra yeniden deneyin.','). Please try again a bit later.')}};
+lang();
+</script></body></html>
